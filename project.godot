@@ -11,6 +11,8 @@ config_version=5
 [application]
 
 config/name="HexGrid"
+config/use_custom_user_dir=true
+config/custom_user_dir_name="HexNet"
 run/main_scene="uid://7pxlpy0ownmu"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 run/max_fps=60
@@ -19,6 +21,10 @@ boot_splash/show_image=false
 boot_splash/stretch_mode=0
 boot_splash/image="uid://cj3at0auyloat"
 config/icon="uid://cj3at0auyloat"
+
+[autoload]
+
+SettingsStore="*res://settings_store.gd"
 
 [display]
 
