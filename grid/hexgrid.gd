@@ -112,6 +112,8 @@ func _get_visual_settings_signature() -> int:
 		signature |= 1 << 5
 	if SettingsStore.get_bool(SettingsStore.REVIEW_UNLOCKED):
 		signature |= 1 << 6
+	if SettingsStore.get_bool(SettingsStore.DISABLE_ANIMATION):
+		signature |= 1 << 7
 	return signature
 
 

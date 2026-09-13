@@ -37,6 +37,11 @@ var _single_touch_start_position := Vector2.ZERO
 
 
 func _ready() -> void:
+	# This camera is updated explicitly whenever its transform or bounds change.
+	# Camera2D otherwise reapplies the same viewport canvas transform every frame,
+	# which prevents low-processor mode from skipping static frame redraws.
+	set_process_internal(false)
+	set_physics_process_internal(false)
 	hold_timer.timeout.connect(_on_hold_timeout)
 
 

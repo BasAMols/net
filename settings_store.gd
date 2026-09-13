@@ -27,6 +27,7 @@ const SHOW_ISOLATION_ERRORS := &"visual/show_isolation_errors"
 const SHOW_GHOST := &"visual/show_ghost"
 const REVIEW_LOCKED := &"visual/review_locked"
 const REVIEW_UNLOCKED := &"visual/review_unlocked"
+const DISABLE_ANIMATION := &"visual/disable_animation"
 
 const AUTO_MOVE_SOURCE := &"interaction/auto_move_source"
 const EASE_SPEED := &"interaction/ease_speed"
@@ -112,6 +113,10 @@ const DEFINITIONS := {
 		"default": false,
 	},
 	AUTO_MOVE_SOURCE: {
+		"type": TYPE_BOOL,
+		"default": false,
+	},
+	DISABLE_ANIMATION: {
 		"type": TYPE_BOOL,
 		"default": false,
 	},

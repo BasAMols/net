@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://7pxlpy0ownmu"]
+
+[ext_resource type="Script" uid="uid://d1t2jweehrshp" path="res://hexgrid.gd" id="1_0xm2m"]
+[ext_resource type="PackedScene" uid="uid://ciy2n1vmjliu1" path="res://tile.tscn" id="2_0xm2m"]
+
+[node name="Control" type="Control" unique_id=1604089861]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Node2D" type="Control" parent="." unique_id=1115575389]
+layout_mode = 1
+anchor_left = -1.3470001
+offset_left = -5412.12
+offset_top = -4536.0
+offset_right = -5466.0
+offset_bottom = -4536.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+script = ExtResource("1_0xm2m")
+tile = ExtResource("2_0xm2m")
+tileCount = 331
+
+[node name="camera" type="Camera2D" parent="Node2D" unique_id=606721307]
+offset = Vector2(21.25, 0)
+zoom = Vector2(-0.166, -0.166)

@@ -27,6 +27,24 @@ static var SOURCES := {
 	"6": ["res://assets/hex/6.png", "res://assets/hex/6_active.png", [0, 1, 2, 3, 4, 5], 1, false],
 }
 
+const RAINBOW_DURATION_MSEC := 3000
+const RAINBOW_SATURATION := 1.0
+const RAINBOW_LIGHTNESS := 0.7
+
+static var _rainbow_lut: PackedColorArray = _build_rainbow_lut()
+
+
+static func _build_rainbow_lut() -> PackedColorArray:
+	var colors := PackedColorArray()
+	colors.resize(RAINBOW_DURATION_MSEC)
+	for index in range(RAINBOW_DURATION_MSEC):
+		colors[index] = Color.from_ok_hsl(
+			float(index) / RAINBOW_DURATION_MSEC,
+			RAINBOW_SATURATION,
+			RAINBOW_LIGHTNESS
+		)
+	return colors
+
 var asset_key := "target"
 var axial_coord := Vector2i.ZERO
 var rotation_target := 0
@@ -39,6 +57,7 @@ var is_correct := false
 var puzzle_completed := false
 var dot := false
 var board_bounds_length := 1.0
+var _rainbow_phase_msec := 0
 
 var _source_assets: Array[String] = []
 var _active_color_target := Color(0.9, 0.9, 0.9)
@@ -60,6 +79,14 @@ func setup(
 	dot = asset[4]
 	_source_assets = [asset[0], asset[1]]
 	board_bounds_length = maxf(bounds_length, 0.001)
+	_rainbow_phase_msec = posmod(
+		roundi(
+			axial_coord.length()
+			/ board_bounds_length
+			* RAINBOW_DURATION_MSEC
+		),
+		RAINBOW_DURATION_MSEC
+	)
 	position = HexNetGenerator.axial_to_unit(given_coord, orientation) * tile_size
 	rotation_degrees = tile_rotation_offset_degrees
 
@@ -112,6 +139,8 @@ func _ready() -> void:
 
 
 func _has_continuous_color_animation() -> bool:
+	if SettingsStore.get_bool(SettingsStore.DISABLE_ANIMATION):
+		return false
 	if puzzle_completed and SettingsStore.get_bool(SettingsStore.COMPLETION_EFFECT):
 		return true
 	return (
@@ -122,10 +151,10 @@ func _has_continuous_color_animation() -> bool:
 
 
 func _get_rainbow_color() -> Color:
-	var duration_msec := 3000.0
-	var phase_offset := axial_coord.length() / board_bounds_length * duration_msec
-	var hue := (Time.get_ticks_msec() + phase_offset) / duration_msec
-	return Color.from_ok_hsl(hue, 1, 0.7)
+	var time_index := int(Time.get_ticks_msec() % RAINBOW_DURATION_MSEC)
+	return _rainbow_lut[
+		(time_index + _rainbow_phase_msec) % RAINBOW_DURATION_MSEC
+	]
 
 
 func _get_active_color_target() -> Color:
@@ -198,6 +227,12 @@ func _apply_visual_targets(delta: float, immediately: bool = false) -> bool:
 
 
 func _process(delta: float) -> void:
+	if SettingsStore.get_bool(SettingsStore.DISABLE_ANIMATION):
+		_refresh_visual_targets()
+		_apply_visual_targets(0.0, true)
+		set_process(false)
+		return
+
 	var continuously_animated := _has_continuous_color_animation()
 	if _visual_targets_dirty:
 		_refresh_visual_targets()

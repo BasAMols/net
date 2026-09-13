@@ -4,7 +4,6 @@
 [ext_resource type="Script" uid="uid://c7c7yepg7xmma" path="res://background.gd" id="1_7mycd"]
 [ext_resource type="Theme" uid="uid://bnuyruidnnl8c" path="res://ui/theme.tres" id="1_272bh"]
 [ext_resource type="PackedScene" uid="uid://ciy2n1vmjliu1" path="res://ui/tile.tscn" id="2_0xm2m"]
-[ext_resource type="Script" uid="uid://b0p3hw53rolj5" path="res://ui.gd" id="3_4c57u"]
 [ext_resource type="PackedScene" uid="uid://cc34rudgrm255" path="res://ui/toggleRow.tscn" id="3_kek77"]
 [ext_resource type="PackedScene" uid="uid://bhrdwdjjsb3l4" path="res://ui/sliderRow.tscn" id="4_4c57u"]
 [ext_resource type="Script" uid="uid://bqa6gxfhmkrr1" path="res://ui/tile.gd" id="4_lquwl"]
@@ -13,8 +12,6 @@
 
 [sub_resource type="FoldableGroup" id="FoldableGroup_dg77c"]
 allow_folding_all = true
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_c2wqx"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ay4pc"]
 bg_color = Color(0.17343748, 0.17343748, 0.17343748, 1)
@@ -48,7 +45,6 @@ grid = NodePath("../../RepeatLayer/RepeatContent/Node2D")
 
 [node name="UI" type="CanvasLayer" parent="." unique_id=822341721]
 layer = 10
-script = ExtResource("3_4c57u")
 
 [node name="Screenroot" type="Control" parent="UI" unique_id=1156667623]
 layout_mode = 3
@@ -214,11 +210,53 @@ size_flags_horizontal = 2
 size_flags_vertical = 3
 theme = ExtResource("1_272bh")
 
-[node name="_6" type="HSeparator" parent="UI/Screenroot/SafeSpace/VBoxContainer/Anchorspace/Settings/HBoxContainer/ScrollContainer/VBoxContainer" unique_id=123523225]
+[node name="Show loop errors" parent="UI/Screenroot/SafeSpace/VBoxContainer/Anchorspace/Settings/HBoxContainer/ScrollContainer/VBoxContainer" unique_id=1849586561 instance=ExtResource("3_kek77")]
+layout_mode = 2
+label = "Show loop errors"
+icon = "all_inclusive"
+tooltip = "No section is allowed to loop on itself. When this is true that section is highlighted red."
+setting_key = &"visual/show_loop_errors"
+
+[node name="Show isolation errors" parent="UI/Screenroot/SafeSpace/VBoxContainer/Anchorspace/Settings/HBoxContainer/ScrollContainer/VBoxContainer" unique_id=1535181493 instance=ExtResource("3_kek77")]
+layout_mode = 2
+label = "Show isolation errors"
+icon = "network_node"
+tooltip = "All section must be connected to each other. When this is true, sections that have been completed but do not connect to the rest of the network are hightlighted blue. "
+setting_key = &"visual/show_isolation_errors"
+
+[node name="_4" type="HSeparator" parent="UI/Screenroot/SafeSpace/VBoxContainer/Anchorspace/Settings/HBoxContainer/ScrollContainer/VBoxContainer" unique_id=1025898233]
 layout_mode = 2
 theme = ExtResource("1_272bh")
 theme_override_constants/separation = 13
-theme_override_styles/separator = SubResource("StyleBoxEmpty_c2wqx")
+theme_override_styles/separator = SubResource("StyleBoxFlat_ay4pc")
+
+[node name="Review locked" parent="UI/Screenroot/SafeSpace/VBoxContainer/Anchorspace/Settings/HBoxContainer/ScrollContainer/VBoxContainer" unique_id=817420586 instance=ExtResource("3_kek77")]
+layout_mode = 2
+label = "Review locked"
+icon = "frame_inspect"
+tooltip = "Show which locked pieces are correct or incorrect. "
+setting_key = &"visual/review_locked"
+
+[node name="Review unlocked" parent="UI/Screenroot/SafeSpace/VBoxContainer/Anchorspace/Settings/HBoxContainer/ScrollContainer/VBoxContainer" unique_id=922694383 instance=ExtResource("3_kek77")]
+visible = false
+layout_mode = 2
+label = "Review unlocked"
+tooltip = "Show which locked pieces are correct or incorrect. "
+setting_key = &"visual/review_unlocked"
+
+[node name="Show wrapping grid" parent="UI/Screenroot/SafeSpace/VBoxContainer/Anchorspace/Settings/HBoxContainer/ScrollContainer/VBoxContainer" unique_id=1338538700 instance=ExtResource("3_kek77")]
+layout_mode = 2
+label = "Show wrapping grid"
+icon = "border_style"
+tooltip = "For wrap mode only. Show an infinite grid. "
+setting_key = &"visual/show_ghost"
+
+[node name="_8" type="HSeparator" parent="UI/Screenroot/SafeSpace/VBoxContainer/Anchorspace/Settings/HBoxContainer/ScrollContainer/VBoxContainer" unique_id=1108277704]
+custom_minimum_size = Vector2(0, 8.605)
+layout_mode = 2
+theme = ExtResource("1_272bh")
+theme_override_constants/separation = 13
+theme_override_styles/separator = SubResource("StyleBoxFlat_ay4pc")
 
 [node name="Show paths" parent="UI/Screenroot/SafeSpace/VBoxContainer/Anchorspace/Settings/HBoxContainer/ScrollContainer/VBoxContainer" unique_id=1996876674 instance=ExtResource("3_kek77")]
 custom_minimum_size = Vector2(216, 32)
@@ -242,34 +280,6 @@ icon = "flare"
 tooltip = "Show rainbow effect when puzzle is completed."
 setting_key = &"visual/completion_effect"
 
-[node name="_5" type="HSeparator" parent="UI/Screenroot/SafeSpace/VBoxContainer/Anchorspace/Settings/HBoxContainer/ScrollContainer/VBoxContainer" unique_id=232922863]
-custom_minimum_size = Vector2(0, 8.605)
-layout_mode = 2
-theme = ExtResource("1_272bh")
-theme_override_constants/separation = 13
-theme_override_styles/separator = SubResource("StyleBoxFlat_ay4pc")
-
-[node name="Review locked" parent="UI/Screenroot/SafeSpace/VBoxContainer/Anchorspace/Settings/HBoxContainer/ScrollContainer/VBoxContainer" unique_id=817420586 instance=ExtResource("3_kek77")]
-layout_mode = 2
-label = "Review locked"
-icon = "frame_inspect"
-tooltip = "Show which locked pieces are correct or incorrect. "
-setting_key = &"visual/review_locked"
-
-[node name="Review unlocked" parent="UI/Screenroot/SafeSpace/VBoxContainer/Anchorspace/Settings/HBoxContainer/ScrollContainer/VBoxContainer" unique_id=922694383 instance=ExtResource("3_kek77")]
-visible = false
-layout_mode = 2
-label = "Review unlocked"
-tooltip = "Show which locked pieces are correct or incorrect. "
-setting_key = &"visual/review_unlocked"
-
-[node name="Auto move source" parent="UI/Screenroot/SafeSpace/VBoxContainer/Anchorspace/Settings/HBoxContainer/ScrollContainer/VBoxContainer" unique_id=1733412995 instance=ExtResource("3_kek77")]
-layout_mode = 2
-label = "Auto move source"
-icon = "rotate_auto"
-tooltip = "Automatically move spawn when rotating a tile."
-setting_key = &"interaction/auto_move_source"
-
 [node name="_7" type="HSeparator" parent="UI/Screenroot/SafeSpace/VBoxContainer/Anchorspace/Settings/HBoxContainer/ScrollContainer/VBoxContainer" unique_id=1953057643]
 custom_minimum_size = Vector2(0, 8.605)
 layout_mode = 2
@@ -291,37 +301,18 @@ icon = "timer"
 tooltip = "After this amount of miliseconds of holding left-click, it counts as a right click. "
 setting_key = &"interaction/hold_delay_ms"
 
-[node name="_2" type="HSeparator" parent="UI/Screenroot/SafeSpace/VBoxContainer/Anchorspace/Settings/HBoxContainer/ScrollContainer/VBoxContainer" unique_id=1964332123]
+[node name="Auto move source" parent="UI/Screenroot/SafeSpace/VBoxContainer/Anchorspace/Settings/HBoxContainer/ScrollContainer/VBoxContainer" unique_id=1733412995 instance=ExtResource("3_kek77")]
 layout_mode = 2
-theme = ExtResource("1_272bh")
-theme_override_styles/separator = SubResource("StyleBoxFlat_ay4pc")
+label = "Auto move source"
+icon = "rotate_auto"
+tooltip = "Automatically move spawn when rotating a tile."
+setting_key = &"interaction/auto_move_source"
 
-[node name="Show loop errors" parent="UI/Screenroot/SafeSpace/VBoxContainer/Anchorspace/Settings/HBoxContainer/ScrollContainer/VBoxContainer" unique_id=1849586561 instance=ExtResource("3_kek77")]
+[node name="Disable all animation" parent="UI/Screenroot/SafeSpace/VBoxContainer/Anchorspace/Settings/HBoxContainer/ScrollContainer/VBoxContainer" unique_id=124426299 instance=ExtResource("3_kek77")]
 layout_mode = 2
-label = "Show loop errors"
-icon = "all_inclusive"
-tooltip = "No section is allowed to loop on itself. When this is true that section is highlighted red."
-setting_key = &"visual/show_loop_errors"
-
-[node name="Show isolation errors" parent="UI/Screenroot/SafeSpace/VBoxContainer/Anchorspace/Settings/HBoxContainer/ScrollContainer/VBoxContainer" unique_id=1535181493 instance=ExtResource("3_kek77")]
-layout_mode = 2
-label = "Show isolation errors"
-icon = "network_node"
-tooltip = "All section must be connected to each other. When this is true, sections that have been completed but do not connect to the rest of the network are hightlighted blue. "
-setting_key = &"visual/show_isolation_errors"
-
-[node name="_4" type="HSeparator" parent="UI/Screenroot/SafeSpace/VBoxContainer/Anchorspace/Settings/HBoxContainer/ScrollContainer/VBoxContainer" unique_id=1025898233]
-layout_mode = 2
-theme = ExtResource("1_272bh")
-theme_override_constants/separation = 13
-theme_override_styles/separator = SubResource("StyleBoxFlat_ay4pc")
-
-[node name="Show wrapping grid" parent="UI/Screenroot/SafeSpace/VBoxContainer/Anchorspace/Settings/HBoxContainer/ScrollContainer/VBoxContainer" unique_id=1338538700 instance=ExtResource("3_kek77")]
-layout_mode = 2
-label = "Show wrapping grid"
-icon = "border_style"
-tooltip = "For wrap mode only. Show an infinite grid. "
-setting_key = &"visual/show_ghost"
+label = "Disable all animation"
+tooltip = "Removes all visual animation effects and easing"
+setting_key = &"visual/disable_animation"
 
 [node name="Anchorspace2" type="Control" parent="UI/Screenroot/SafeSpace/VBoxContainer" unique_id=1375860063]
 custom_minimum_size = Vector2(64.27, 30)
@@ -405,6 +396,7 @@ grid = NodePath("..")
 min_zoom_multiplier = 0.3
 max_zoom_multiplier = 15.0
 mouse_zoom_step = 1.07
+drag_threshold_pixels = 12.0
 
 [node name="HoldTimer" type="Timer" parent="RepeatLayer/RepeatContent/Node2D/camera" unique_id=1024804817]
 one_shot = true
