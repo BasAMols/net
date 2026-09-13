@@ -50,6 +50,7 @@ flat = true
 script = ExtResource("3_3k7rx")
 
 [node name="richText" type="RichTextLabel" parent="." unique_id=1827448273]
+visible = false
 custom_minimum_size = Vector2(216, -1)
 custom_maximum_size = Vector2(194, -1)
 clip_contents = false

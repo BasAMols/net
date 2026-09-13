@@ -4,9 +4,23 @@
 [ext_resource type="Script" uid="uid://c7c7yepg7xmma" path="res://background.gd" id="1_7mycd"]
 [ext_resource type="Theme" uid="uid://bnuyruidnnl8c" path="res://ui/theme.tres" id="1_272bh"]
 [ext_resource type="PackedScene" uid="uid://ciy2n1vmjliu1" path="res://ui/tile.tscn" id="2_0xm2m"]
-[ext_resource type="PackedScene" uid="uid://bduovw4gwi472" path="res://ui/ui.tscn" id="4_1bvp3"]
+[ext_resource type="PackedScene" uid="uid://cc34rudgrm255" path="res://ui/toggleRow.tscn" id="3_kek77"]
+[ext_resource type="PackedScene" uid="uid://bhrdwdjjsb3l4" path="res://ui/sliderRow.tscn" id="4_4c57u"]
 [ext_resource type="Script" uid="uid://bqa6gxfhmkrr1" path="res://ui/tile.gd" id="4_lquwl"]
+[ext_resource type="PackedScene" uid="uid://pncyklckcu7r" path="res://ui/selectRow.tscn" id="5_efxa6"]
 [ext_resource type="Script" uid="uid://ducy44oriw0o0" path="res://playfield_camera.gd" id="6_camera"]
+
+[sub_resource type="FoldableGroup" id="FoldableGroup_dg77c"]
+allow_folding_all = true
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_c2wqx"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ay4pc"]
+bg_color = Color(0.17343748, 0.17343748, 0.17343748, 1)
+border_width_bottom = 2
+border_color = Color(0.32798582, 0.33156258, 0.3953125, 1)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_uud5k"]
 
 [node name="Control" type="Control" unique_id=1604089861]
 layout_mode = 3
@@ -33,8 +47,285 @@ color = Color(0.20065421, 0.19849852, 0.25156248, 1)
 script = ExtResource("1_7mycd")
 grid = NodePath("../../RepeatLayer/RepeatContent/Node2D")
 
-[node name="CanvasLayer" parent="." unique_id=822341721 instance=ExtResource("4_1bvp3")]
-process_priority = 0
+[node name="UI" type="CanvasLayer" parent="." unique_id=822341721]
+layer = 10
+
+[node name="Screenroot" type="Control" parent="UI" unique_id=1156667623]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme = ExtResource("1_272bh")
+
+[node name="SafeSpace" type="MarginContainer" parent="UI/Screenroot" unique_id=1503232017]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme = ExtResource("1_272bh")
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="Anchorspace" type="Control" parent="UI/Screenroot/SafeSpace" unique_id=2138309972]
+layout_mode = 2
+mouse_filter = 2
+theme = ExtResource("1_272bh")
+
+[node name="New Game" type="FoldableContainer" parent="UI/Screenroot/SafeSpace/Anchorspace" unique_id=1558604723]
+z_index = 3
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -280.0
+offset_right = 124.0
+offset_bottom = -32.0
+grow_vertical = 0
+theme = ExtResource("1_272bh")
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+folded = true
+title = "New Game"
+title_position = 1
+foldable_group = SubResource("FoldableGroup_dg77c")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/Screenroot/SafeSpace/Anchorspace/New Game" unique_id=1182681570]
+visible = false
+layout_mode = 2
+theme = ExtResource("1_272bh")
+
+[node name="Unique solution" parent="UI/Screenroot/SafeSpace/Anchorspace/New Game/VBoxContainer" unique_id=1852073229 instance=ExtResource("3_kek77")]
+layout_mode = 2
+label = "Unique solution"
+icon = "fingerprint"
+tooltip = "Ensures the puzzle has only one possible solution. This will take longer to generate. 
+[i]Recomended to disable when the rings value is above 10. [/i]"
+setting_key = &"new_game/unique_solution"
+
+[node name="Wrap" parent="UI/Screenroot/SafeSpace/Anchorspace/New Game/VBoxContainer" unique_id=1214973532 instance=ExtResource("3_kek77")]
+layout_mode = 2
+label = "Wrap"
+icon = "hive"
+tooltip = "Allow wrapping the grid from the edge of the grid. This makes the game more difficult. When \"Show wrapping grid\" is enabled this shows an infinitly scrolling grid. "
+setting_key = &"new_game/wrap"
+
+[node name="Rings" parent="UI/Screenroot/SafeSpace/Anchorspace/New Game/VBoxContainer" unique_id=1447188047 instance=ExtResource("4_4c57u")]
+layout_mode = 2
+label = "Rings"
+icon = "hexagon"
+tooltip = "Amount of rings the puzzle will have. Values above 8 might take a long time to load. "
+setting_key = &"new_game/radius"
+
+[node name="Orientation" parent="UI/Screenroot/SafeSpace/Anchorspace/New Game/VBoxContainer" unique_id=420457518 instance=ExtResource("5_efxa6")]
+layout_mode = 2
+label = "Orientation"
+icon = "screen_rotation_alt"
+values = Array[String](["Flat top", "Pointy top"])
+setting_key = &"new_game/orientation"
+
+[node name="Buttons" type="HBoxContainer" parent="UI/Screenroot/SafeSpace/Anchorspace/New Game/VBoxContainer" unique_id=1619325168]
+layout_mode = 2
+
+[node name="Button4" type="Button" parent="UI/Screenroot/SafeSpace/Anchorspace/New Game/VBoxContainer/Buttons" unique_id=185472925]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 8
+theme = ExtResource("1_272bh")
+theme_override_font_sizes/font_size = 0
+text = "New Game"
+
+[node name="Settings" type="FoldableContainer" parent="UI/Screenroot/SafeSpace/Anchorspace" unique_id=1739789927]
+z_index = 3
+custom_minimum_size = Vector2(-1, 0)
+custom_maximum_size = Vector2(570.17, -1)
+propagate_maximum_size = false
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -453.0
+offset_right = 472.0
+grow_vertical = 0
+pivot_offset_ratio = Vector2(0, 1)
+theme = ExtResource("1_272bh")
+folded = true
+title = "Settings"
+title_position = 1
+title_text_overrun_behavior = 1
+foldable_group = SubResource("FoldableGroup_dg77c")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="UI/Screenroot/SafeSpace/Anchorspace/Settings" unique_id=1547136073]
+visible = false
+custom_minimum_size = Vector2(-1, 0)
+layout_mode = 2
+horizontal_scroll_mode = 4
+vertical_scroll_mode = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/Screenroot/SafeSpace/Anchorspace/Settings/ScrollContainer" unique_id=2014505306]
+propagate_maximum_size = false
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_272bh")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/Screenroot/SafeSpace/Anchorspace/Settings/ScrollContainer/HBoxContainer" unique_id=1471633133]
+layout_mode = 2
+theme = ExtResource("1_272bh")
+
+[node name="Buttons" type="HBoxContainer" parent="UI/Screenroot/SafeSpace/Anchorspace/Settings/ScrollContainer/HBoxContainer/VBoxContainer" unique_id=1792829745]
+layout_mode = 2
+
+[node name="Button4" type="Button" parent="UI/Screenroot/SafeSpace/Anchorspace/Settings/ScrollContainer/HBoxContainer/VBoxContainer/Buttons" unique_id=1565465530]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 8
+theme = ExtResource("1_272bh")
+theme_override_font_sizes/font_size = 0
+text = "New Game"
+
+[node name="_6" type="HSeparator" parent="UI/Screenroot/SafeSpace/Anchorspace/Settings/ScrollContainer/HBoxContainer/VBoxContainer" unique_id=123523225]
+layout_mode = 2
+theme = ExtResource("1_272bh")
+theme_override_constants/separation = 13
+theme_override_styles/separator = SubResource("StyleBoxEmpty_c2wqx")
+
+[node name="Show paths" parent="UI/Screenroot/SafeSpace/Anchorspace/Settings/ScrollContainer/HBoxContainer/VBoxContainer" unique_id=1996876674 instance=ExtResource("3_kek77")]
+custom_minimum_size = Vector2(216, 32)
+layout_mode = 2
+label = "Show paths"
+icon = "electric_bolt"
+tooltip = "Light up everything connected to a central spawn point. Use middle mouse button to move. "
+setting_key = &"visual/show_paths"
+
+[node name="Rainbow paths" parent="UI/Screenroot/SafeSpace/Anchorspace/Settings/ScrollContainer/HBoxContainer/VBoxContainer" unique_id=302271027 instance=ExtResource("3_kek77")]
+layout_mode = 2
+label = "Rainbow paths"
+icon = "looks"
+tooltip = "Show a rainbow effect on active paths instead of white."
+setting_key = &"visual/rainbow_paths"
+
+[node name="Completion effect" parent="UI/Screenroot/SafeSpace/Anchorspace/Settings/ScrollContainer/HBoxContainer/VBoxContainer" unique_id=568491810 instance=ExtResource("3_kek77")]
+layout_mode = 2
+label = "Completion effect"
+icon = "flare"
+tooltip = "Show rainbow effect when puzzle is completed."
+setting_key = &"visual/completion_effect"
+
+[node name="_5" type="HSeparator" parent="UI/Screenroot/SafeSpace/Anchorspace/Settings/ScrollContainer/HBoxContainer/VBoxContainer" unique_id=232922863]
+custom_minimum_size = Vector2(0, 8.605)
+layout_mode = 2
+theme = ExtResource("1_272bh")
+theme_override_constants/separation = 13
+theme_override_styles/separator = SubResource("StyleBoxFlat_ay4pc")
+
+[node name="Review locked" parent="UI/Screenroot/SafeSpace/Anchorspace/Settings/ScrollContainer/HBoxContainer/VBoxContainer" unique_id=817420586 instance=ExtResource("3_kek77")]
+layout_mode = 2
+label = "Review locked"
+icon = "frame_inspect"
+tooltip = "Show which locked pieces are correct or incorrect. "
+setting_key = &"visual/review_locked"
+
+[node name="Review unlocked" parent="UI/Screenroot/SafeSpace/Anchorspace/Settings/ScrollContainer/HBoxContainer/VBoxContainer" unique_id=922694383 instance=ExtResource("3_kek77")]
+visible = false
+layout_mode = 2
+label = "Review unlocked"
+tooltip = "Show which locked pieces are correct or incorrect. "
+setting_key = &"visual/review_unlocked"
+
+[node name="Auto move source" parent="UI/Screenroot/SafeSpace/Anchorspace/Settings/ScrollContainer/HBoxContainer/VBoxContainer" unique_id=1733412995 instance=ExtResource("3_kek77")]
+layout_mode = 2
+label = "Auto move source"
+icon = "rotate_auto"
+tooltip = "Automatically move spawn when rotating a tile."
+setting_key = &"interaction/auto_move_source"
+
+[node name="VSeparator" type="VSeparator" parent="UI/Screenroot/SafeSpace/Anchorspace/Settings/ScrollContainer/HBoxContainer" unique_id=1208879734]
+layout_mode = 2
+theme_override_constants/separation = 12
+theme_override_styles/separator = SubResource("StyleBoxEmpty_uud5k")
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="UI/Screenroot/SafeSpace/Anchorspace/Settings/ScrollContainer/HBoxContainer" unique_id=124437243]
+layout_mode = 2
+theme = ExtResource("1_272bh")
+
+[node name="Buttons2" type="HBoxContainer" parent="UI/Screenroot/SafeSpace/Anchorspace/Settings/ScrollContainer/HBoxContainer/VBoxContainer2" unique_id=1355369898]
+layout_mode = 2
+
+[node name="randomise" type="Button" parent="UI/Screenroot/SafeSpace/Anchorspace/Settings/ScrollContainer/HBoxContainer/VBoxContainer2/Buttons2" unique_id=76006122]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme = ExtResource("1_272bh")
+text = "Randomise"
+
+[node name="solve" type="Button" parent="UI/Screenroot/SafeSpace/Anchorspace/Settings/ScrollContainer/HBoxContainer/VBoxContainer2/Buttons2" unique_id=581524725]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_272bh")
+theme_override_font_sizes/font_size = 0
+text = "Solve"
+
+[node name="_5" type="HSeparator" parent="UI/Screenroot/SafeSpace/Anchorspace/Settings/ScrollContainer/HBoxContainer/VBoxContainer2" unique_id=1149184739]
+layout_mode = 2
+theme = ExtResource("1_272bh")
+theme_override_constants/separation = 13
+theme_override_styles/separator = SubResource("StyleBoxEmpty_c2wqx")
+
+[node name="Ease speed" parent="UI/Screenroot/SafeSpace/Anchorspace/Settings/ScrollContainer/HBoxContainer/VBoxContainer2" unique_id=730697169 instance=ExtResource("4_4c57u")]
+layout_mode = 2
+label = "Ease speed"
+icon = "motion_play"
+tooltip = "Amount of easing applied to color changes and rotation. Bigger is faster."
+setting_key = &"interaction/ease_speed"
+
+[node name="Hold Delay" parent="UI/Screenroot/SafeSpace/Anchorspace/Settings/ScrollContainer/HBoxContainer/VBoxContainer2" unique_id=1461385395 instance=ExtResource("4_4c57u")]
+layout_mode = 2
+label = "Hold Delay"
+icon = "timer"
+tooltip = "After this amount of miliseconds of holding left-click, it counts as a right click. "
+setting_key = &"interaction/hold_delay_ms"
+
+[node name="_2" type="HSeparator" parent="UI/Screenroot/SafeSpace/Anchorspace/Settings/ScrollContainer/HBoxContainer/VBoxContainer2" unique_id=1964332123]
+layout_mode = 2
+theme = ExtResource("1_272bh")
+theme_override_styles/separator = SubResource("StyleBoxFlat_ay4pc")
+
+[node name="Show loop errors" parent="UI/Screenroot/SafeSpace/Anchorspace/Settings/ScrollContainer/HBoxContainer/VBoxContainer2" unique_id=1849586561 instance=ExtResource("3_kek77")]
+layout_mode = 2
+label = "Show loop errors"
+icon = "all_inclusive"
+tooltip = "No section is allowed to loop on itself. When this is true that section is highlighted red."
+setting_key = &"visual/show_loop_errors"
+
+[node name="Show isolation errors" parent="UI/Screenroot/SafeSpace/Anchorspace/Settings/ScrollContainer/HBoxContainer/VBoxContainer2" unique_id=1535181493 instance=ExtResource("3_kek77")]
+layout_mode = 2
+label = "Show isolation errors"
+icon = "network_node"
+tooltip = "All section must be connected to each other. When this is true, sections that have been completed but do not connect to the rest of the network are hightlighted blue. "
+setting_key = &"visual/show_isolation_errors"
+
+[node name="_4" type="HSeparator" parent="UI/Screenroot/SafeSpace/Anchorspace/Settings/ScrollContainer/HBoxContainer/VBoxContainer2" unique_id=1025898233]
+layout_mode = 2
+theme = ExtResource("1_272bh")
+theme_override_constants/separation = 13
+theme_override_styles/separator = SubResource("StyleBoxFlat_ay4pc")
+
+[node name="Show wrapping grid" parent="UI/Screenroot/SafeSpace/Anchorspace/Settings/ScrollContainer/HBoxContainer/VBoxContainer2" unique_id=1338538700 instance=ExtResource("3_kek77")]
+layout_mode = 2
+label = "Show wrapping grid"
+icon = "border_style"
+tooltip = "For wrap mode only. Show an infinite grid. "
+setting_key = &"visual/show_ghost"
 
 [node name="RepeatLayer" type="Parallax2D" parent="." unique_id=531420540]
 follow_viewport = false
@@ -67,8 +358,8 @@ limit_bottom = -859
 editor_draw_screen = false
 script = ExtResource("6_camera")
 grid = NodePath("..")
-min_zoom_multiplier = 0.5
-max_zoom_multiplier = 20.0
+min_zoom_multiplier = 0.3
+max_zoom_multiplier = 15.0
 mouse_zoom_step = 1.07
 
 [node name="HoldTimer" type="Timer" parent="RepeatLayer/RepeatContent/Node2D/camera" unique_id=1024804817]
@@ -76,7 +367,7 @@ one_shot = true
 
 [node name="CanvasLayer2" type="CanvasLayer" parent="." unique_id=529484103]
 
-[connection signal="pressed" from="CanvasLayer/Screenroot/SafeSpace/Anchorspace/New Game/VBoxContainer/Buttons/Button4" to="RepeatLayer/RepeatContent/Node2D" method="new_puzzle"]
-[connection signal="pressed" from="CanvasLayer/Screenroot/SafeSpace/Anchorspace/Settings/ScrollContainer/HBoxContainer/VBoxContainer/Buttons/Button4" to="RepeatLayer/RepeatContent/Node2D" method="new_puzzle"]
-[connection signal="pressed" from="CanvasLayer/Screenroot/SafeSpace/Anchorspace/Settings/ScrollContainer/HBoxContainer/VBoxContainer2/Buttons2/randomise" to="RepeatLayer/RepeatContent/Node2D" method="rand"]
-[connection signal="pressed" from="CanvasLayer/Screenroot/SafeSpace/Anchorspace/Settings/ScrollContainer/HBoxContainer/VBoxContainer2/Buttons2/solve" to="RepeatLayer/RepeatContent/Node2D" method="solve"]
+[connection signal="pressed" from="UI/Screenroot/SafeSpace/Anchorspace/New Game/VBoxContainer/Buttons/Button4" to="RepeatLayer/RepeatContent/Node2D" method="new_puzzle"]
+[connection signal="pressed" from="UI/Screenroot/SafeSpace/Anchorspace/Settings/ScrollContainer/HBoxContainer/VBoxContainer/Buttons/Button4" to="RepeatLayer/RepeatContent/Node2D" method="new_puzzle"]
+[connection signal="pressed" from="UI/Screenroot/SafeSpace/Anchorspace/Settings/ScrollContainer/HBoxContainer/VBoxContainer2/Buttons2/randomise" to="RepeatLayer/RepeatContent/Node2D" method="rand"]
+[connection signal="pressed" from="UI/Screenroot/SafeSpace/Anchorspace/Settings/ScrollContainer/HBoxContainer/VBoxContainer2/Buttons2/solve" to="RepeatLayer/RepeatContent/Node2D" method="solve"]
