@@ -164,12 +164,14 @@ offset_top = -469.0
 grow_vertical = 0
 pivot_offset_ratio = Vector2(0, 1)
 theme = ExtResource("1_272bh")
+folded = true
 title = "Settings"
 title_position = 1
 title_text_overrun_behavior = 1
 foldable_group = SubResource("FoldableGroup_dg77c")
 
 [node name="ScrollContainer" type="ScrollContainer" parent="UI/Screenroot/SafeSpace/VBoxContainer/Anchorspace/Settings" unique_id=1547136073]
+visible = false
 custom_minimum_size = Vector2(-1, 0)
 layout_mode = 2
 horizontal_scroll_mode = 4
