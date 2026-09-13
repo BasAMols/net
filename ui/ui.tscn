@@ -1,8 +1,6 @@
 [gd_scene format=3 uid="uid://bduovw4gwi472"]
 
 [ext_resource type="Theme" uid="uid://bnuyruidnnl8c" path="res://ui/theme.tres" id="1_m6e0p"]
-[ext_resource type="Script" uid="uid://ctd2p85k4xocn" path="res://ui/configUI.gd" id="2_27fn8"]
-[ext_resource type="Script" uid="uid://bapuomjjwue1f" path="res://ui/actionButton.gd" id="4_ibotj"]
 [ext_resource type="PackedScene" uid="uid://pncyklckcu7r" path="res://ui/selectRow.tscn" id="7_bo1jx"]
 [ext_resource type="PackedScene" uid="uid://cc34rudgrm255" path="res://ui/toggleRow.tscn" id="10_ay4pc"]
 [ext_resource type="PackedScene" uid="uid://bhrdwdjjsb3l4" path="res://ui/sliderRow.tscn" id="11_bi8hs"]
@@ -22,8 +20,6 @@ border_color = Color(0.32798582, 0.33156258, 0.3953125, 1)
 [node name="CanvasLayer" type="CanvasLayer" unique_id=822341721]
 process_priority = -1
 layer = 10
-script = ExtResource("2_27fn8")
-curve = 1.310723
 
 [node name="Screenroot" type="Control" parent="." unique_id=1156667623]
 layout_mode = 3
@@ -80,36 +76,27 @@ theme = ExtResource("1_m6e0p")
 layout_mode = 2
 label = "Unique solution"
 icon = "fingerprint"
-state = true
-target = "self"
-prop = "value_requireUnique"
+setting_key = &"new_game/unique_solution"
 
 [node name="Wrap" parent="Screenroot/SafeSpace/Anchorspace/New Game/VBoxContainer" unique_id=1214973532 instance=ExtResource("10_ay4pc")]
 layout_mode = 2
 label = "Wrap"
 icon = "hive"
-target = "self"
-prop = "value_wrap"
+setting_key = &"new_game/wrap"
 
 [node name="Rings" parent="Screenroot/SafeSpace/Anchorspace/New Game/VBoxContainer" unique_id=1447188047 instance=ExtResource("11_bi8hs")]
 layout_mode = 2
 label = "Rings"
 icon = "hexagon"
 tooltip = "Amount of rings the puzzle will have. Values above 8 might take a long time to load. "
-state = 2.0
-target = "self"
-prop = "value_radius"
-minValue = 1.0
-maxValue = 15.0
-stepValue = 1.0
+setting_key = &"new_game/radius"
 
 [node name="Orientation" parent="Screenroot/SafeSpace/Anchorspace/New Game/VBoxContainer" unique_id=420457518 instance=ExtResource("7_bo1jx")]
 layout_mode = 2
 label = "Orientation"
 icon = "screen_rotation_alt"
 values = Array[String](["Flat top", "Pointy top"])
-target = "self"
-prop = "value_orientation"
+setting_key = &"new_game/orientation"
 
 [node name="Buttons" type="HBoxContainer" parent="Screenroot/SafeSpace/Anchorspace/New Game/VBoxContainer" unique_id=1619325168]
 layout_mode = 2
@@ -122,9 +109,6 @@ size_flags_vertical = 8
 theme = ExtResource("1_m6e0p")
 theme_override_font_sizes/font_size = 0
 text = "New Game"
-script = ExtResource("4_ibotj")
-target = "grid"
-prop = "new_puzzle"
 
 [node name="Settings" type="FoldableContainer" parent="Screenroot/SafeSpace/Anchorspace" unique_id=1739789927]
 z_index = 3
@@ -174,9 +158,6 @@ size_flags_vertical = 8
 theme = ExtResource("1_m6e0p")
 theme_override_font_sizes/font_size = 0
 text = "New Game"
-script = ExtResource("4_ibotj")
-target = "grid"
-prop = "new_puzzle"
 
 [node name="_6" type="HSeparator" parent="Screenroot/SafeSpace/Anchorspace/Settings/ScrollContainer/HBoxContainer/VBoxContainer" unique_id=123523225]
 layout_mode = 2
@@ -190,26 +171,21 @@ layout_mode = 2
 label = "Show paths"
 icon = "electric_bolt"
 tooltip = "Light up everything connected to a central spawn point. Use middle mouse button to move. "
-state = true
-target = "self"
-prop = "value_showSpawn"
+setting_key = &"visual/show_paths"
 
 [node name="Rainbow paths" parent="Screenroot/SafeSpace/Anchorspace/Settings/ScrollContainer/HBoxContainer/VBoxContainer" unique_id=302271027 instance=ExtResource("10_ay4pc")]
 layout_mode = 2
 label = "Rainbow paths"
 icon = "looks"
 tooltip = "Show a rainbow effect on active paths instead of white."
-target = "self"
-prop = "value_showPathRainbow"
+setting_key = &"visual/rainbow_paths"
 
 [node name="Completion effect" parent="Screenroot/SafeSpace/Anchorspace/Settings/ScrollContainer/HBoxContainer/VBoxContainer" unique_id=568491810 instance=ExtResource("10_ay4pc")]
 layout_mode = 2
 label = "Completion effect"
 icon = "flare"
 tooltip = "Show rainbow effect when puzzle is completed."
-state = true
-target = "self"
-prop = "value_showCompletionRainbow"
+setting_key = &"visual/completion_effect"
 
 [node name="_5" type="HSeparator" parent="Screenroot/SafeSpace/Anchorspace/Settings/ScrollContainer/HBoxContainer/VBoxContainer" unique_id=232922863]
 custom_minimum_size = Vector2(0, 8.605)
@@ -223,24 +199,21 @@ layout_mode = 2
 label = "Review locked"
 icon = "frame_inspect"
 tooltip = "Show which locked pieces are correct or incorrect. "
-target = "self"
-prop = "value_review"
+setting_key = &"visual/review_locked"
 
 [node name="Review unlocked" parent="Screenroot/SafeSpace/Anchorspace/Settings/ScrollContainer/HBoxContainer/VBoxContainer" unique_id=922694383 instance=ExtResource("10_ay4pc")]
 visible = false
 layout_mode = 2
 label = "Review unlocked"
 tooltip = "Show which locked pieces are correct or incorrect. "
-target = "self"
-prop = "value_reviewAll"
+setting_key = &"visual/review_unlocked"
 
 [node name="Auto move source" parent="Screenroot/SafeSpace/Anchorspace/Settings/ScrollContainer/HBoxContainer/VBoxContainer" unique_id=1733412995 instance=ExtResource("10_ay4pc")]
 layout_mode = 2
 label = "Auto move source"
 icon = "rotate_auto"
 tooltip = "Automatically move spawn when rotating a tile."
-target = "self"
-prop = "value_autoSpawn"
+setting_key = &"interaction/auto_move_source"
 
 [node name="VSeparator" type="VSeparator" parent="Screenroot/SafeSpace/Anchorspace/Settings/ScrollContainer/HBoxContainer" unique_id=1208879734]
 layout_mode = 2
@@ -261,9 +234,6 @@ size_flags_horizontal = 3
 size_flags_vertical = 4
 theme = ExtResource("1_m6e0p")
 text = "Randomise"
-script = ExtResource("4_ibotj")
-target = "grid"
-prop = "rand"
 
 [node name="solve" type="Button" parent="Screenroot/SafeSpace/Anchorspace/Settings/ScrollContainer/HBoxContainer/VBoxContainer2/Buttons2" unique_id=581524725]
 custom_minimum_size = Vector2(0, 30)
@@ -272,9 +242,6 @@ size_flags_horizontal = 3
 theme = ExtResource("1_m6e0p")
 theme_override_font_sizes/font_size = 0
 text = "Solve"
-script = ExtResource("4_ibotj")
-target = "grid"
-prop = "solve"
 
 [node name="_5" type="HSeparator" parent="Screenroot/SafeSpace/Anchorspace/Settings/ScrollContainer/HBoxContainer/VBoxContainer2" unique_id=1149184739]
 layout_mode = 2
@@ -287,23 +254,14 @@ layout_mode = 2
 label = "Ease speed"
 icon = "motion_play"
 tooltip = "Amount of easing applied to color changes and rotation. Bigger is faster."
-state = 20.0
-target = "self"
-prop = "value_easeSpeed"
-minValue = 10.0
-maxValue = 50.0
-stepValue = 5.0
+setting_key = &"interaction/ease_speed"
 
 [node name="Hold Delay" parent="Screenroot/SafeSpace/Anchorspace/Settings/ScrollContainer/HBoxContainer/VBoxContainer2" unique_id=1461385395 instance=ExtResource("11_bi8hs")]
 layout_mode = 2
 label = "Hold Delay"
 icon = "timer"
 tooltip = "After this amount of miliseconds of holding left-click, it counts as a right click. "
-state = 250.0
-target = "self"
-prop = "value_hold_delay"
-minValue = 200.0
-maxValue = 2000.0
+setting_key = &"interaction/hold_delay_ms"
 
 [node name="_2" type="HSeparator" parent="Screenroot/SafeSpace/Anchorspace/Settings/ScrollContainer/HBoxContainer/VBoxContainer2" unique_id=1964332123]
 layout_mode = 2
@@ -315,17 +273,14 @@ layout_mode = 2
 label = "Show loop errors"
 icon = "all_inclusive"
 tooltip = "No section is allowed to loop on itself. When this is true that section is highlighted red."
-state = true
-target = "self"
-prop = "value_showLoops"
+setting_key = &"visual/show_loop_errors"
 
 [node name="Show isolation errors" parent="Screenroot/SafeSpace/Anchorspace/Settings/ScrollContainer/HBoxContainer/VBoxContainer2" unique_id=1535181493 instance=ExtResource("10_ay4pc")]
 layout_mode = 2
 label = "Show isolation errors"
 icon = "network_node"
 tooltip = "All section must be connected to each other. When this is true, sections that have been completed but do not connect to the rest of the network are hightlighted blue. "
-target = "self"
-prop = "value_showIsolation"
+setting_key = &"visual/show_isolation_errors"
 
 [node name="_4" type="HSeparator" parent="Screenroot/SafeSpace/Anchorspace/Settings/ScrollContainer/HBoxContainer/VBoxContainer2" unique_id=1025898233]
 layout_mode = 2
@@ -338,6 +293,4 @@ layout_mode = 2
 label = "Show ghost"
 icon = "border_style"
 tooltip = "For wrap mode only. Show an infinite grid. "
-state = true
-target = "self"
-prop = "value_showGhost"
+setting_key = &"visual/show_ghost"

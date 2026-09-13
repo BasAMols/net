@@ -48,7 +48,6 @@ layout_mode = 2
 theme = ExtResource("1_4u8bf")
 flat = true
 script = ExtResource("3_3k7rx")
-target = ""
 
 [node name="richText" type="RichTextLabel" parent="." unique_id=1827448273]
 custom_minimum_size = Vector2(216, -1)

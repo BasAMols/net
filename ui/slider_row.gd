@@ -32,20 +32,7 @@ var _tooltip: String = ''
 		richElement.text = v
 		richElement.visible = tooltip.length() > 0
 
-var _state: float = 0.0
-@export var state: float: 
-	get:
-		return _state
-	set(v):
-		_state = v
-		if not is_node_ready(): return
-		actionNumber.value = v
-
-@export var target: String
-@export var prop: String
-@export var minValue: float
-@export var maxValue: float
-@export var stepValue: float
+@export var setting_key: StringName
 
 @export_group('elements')
 @export var actionNumber: ActionNumber
@@ -66,13 +53,7 @@ func _ready() -> void:
 
 	iconElement.text = _icon
 
-	actionNumber.min_value = minValue
-	actionNumber.max_value = maxValue
-	actionNumber.step = stepValue
-	actionNumber.value = _state
 	actionNumber.value_changed.connect(func(v): valueElement.text = str(roundi(v)))
-	actionNumber.target = target
-	actionNumber.prop = prop
-	actionNumber.value_changed.emit(_state)
+	actionNumber.setting_key = setting_key
 
 	valueElement.text = str(actionNumber.value)

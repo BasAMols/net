@@ -128,9 +128,13 @@ func _match() -> bool:
 	return correct == fposmod(rotationTarget, SOURCES[asset_key][3])
 
 func _has_continuous_color_animation() -> bool:
-	if grid.isDone and grid.getS('showCompletionRainbow'):
+	if grid.isDone and SettingsStore.get_bool(SettingsStore.COMPLETION_EFFECT):
 		return true
-	return active and grid.getS('showSpawn') and grid.getS('showPathRainbow')
+	return (
+		active
+		and SettingsStore.get_bool(SettingsStore.SHOW_PATHS)
+		and SettingsStore.get_bool(SettingsStore.RAINBOW_PATHS)
+	)
 
 
 func _get_rainbow_color() -> Color:
@@ -147,21 +151,29 @@ func _get_active_color_target() -> Color:
 
 	var activeColorTarget: Color = Color(0.9, 0.9, 0.9)
 
-	if (lock and grid.getS('review')) or (not lock and grid.getS('reviewAll')):
+	if (
+		lock and SettingsStore.get_bool(SettingsStore.REVIEW_LOCKED)
+	) or (
+		not lock and SettingsStore.get_bool(SettingsStore.REVIEW_UNLOCKED)
+	):
 		if _match():
 			activeColorTarget = Color(0.5, 1, 0.5)
 		else:
 			activeColorTarget = Color(1, 0.5, 0.5)
 
 	else:
-		if loop and grid.getS('showLoops'):
+		if loop and SettingsStore.get_bool(SettingsStore.SHOW_LOOP_ERRORS):
 			activeColorTarget = activeColorTarget * Color(1, 0.6, 0.6)
 			pass
-		if isolated and grid.getS('showIsolation') and not grid.isDone:
+		if (
+			isolated
+			and SettingsStore.get_bool(SettingsStore.SHOW_ISOLATION_ERRORS)
+			and not grid.isDone
+		):
 			activeColorTarget = activeColorTarget * Color(0.6, 0.6, 1)
 			pass
 
-	if (not active or not grid.getS('showSpawn')):
+	if not active or not SettingsStore.get_bool(SettingsStore.SHOW_PATHS):
 		activeColorTarget = activeColorTarget * Color(.6, .7, .8)
 
 	return activeColorTarget
@@ -180,7 +192,7 @@ func _refresh_visual_targets() -> void:
 	_active_color_target = _get_active_color_target()
 	_lock_color_target = _get_lock_color_target()
 
-	var show_spawn := grid.getS('showSpawn')
+	var show_spawn := SettingsStore.get_bool(SettingsStore.SHOW_PATHS)
 	var show_spawn_node := spawn and show_spawn and not grid.isDone
 	asset_node_active.visible = show_spawn_node
 	asset_dot.visible = dot or show_spawn_node
@@ -189,7 +201,8 @@ func _refresh_visual_targets() -> void:
 
 
 func _apply_visual_targets(delta: float, immediately: bool = false) -> bool:
-	var weight := 1.0 if immediately else 1.0 - exp(-grid.configUI.value_easeSpeed * delta)
+	var ease_speed := SettingsStore.get_float(SettingsStore.EASE_SPEED)
+	var weight := 1.0 if immediately else 1.0 - exp(-ease_speed * delta)
 	var rotation_target := rotationTarget / 6.0 * TAU
 
 	asset_dot_active.modulate = lerp(
@@ -261,7 +274,7 @@ func primary_click() -> void:
 		tileRotate(rotationTarget - 1)
 	else:
 		tileRotate(rotationTarget + 1)
-	if Input.is_key_pressed(KEY_CTRL) or grid.getS('autoSpawn'):
+	if Input.is_key_pressed(KEY_CTRL) or SettingsStore.get_bool(SettingsStore.AUTO_MOVE_SOURCE):
 		grid.setSpawn(self)
 
 func tileRotate(v: float, s: bool = true) -> void:

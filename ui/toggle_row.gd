@@ -32,17 +32,7 @@ var _tooltip: String = ''
 		richElement.text = v
 		richElement.visible = tooltip.length() > 0
 
-var _state: bool = false
-@export var state: bool: 
-	get:
-		return _state
-	set(v):
-		_state = v
-		if not is_node_ready(): return
-		actionToggle.button_pressed = v
-
-@export var target: String
-@export var prop: String
+@export var setting_key: StringName
 
 @export_group('elements')
 @export var actionToggle: ActionToggle
@@ -54,11 +44,9 @@ var _state: bool = false
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	richElement.visible = richElement.text.length() > 0
-	actionToggle.target = target
-	actionToggle.prop = prop
+	actionToggle.setting_key = setting_key
 
 	labelElement.text = _label
 	richElement.text = _tooltip
 	richElement.visible = _tooltip.length() > 0
 	iconElement.text = _icon
-	actionToggle.button_pressed = _state

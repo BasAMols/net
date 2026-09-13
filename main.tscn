@@ -33,9 +33,8 @@ color = Color(0.20065421, 0.19849852, 0.25156248, 1)
 script = ExtResource("1_7mycd")
 grid = NodePath("../../RepeatLayer/RepeatContent/Node2D")
 
-[node name="CanvasLayer" parent="." unique_id=822341721 node_paths=PackedStringArray("grid") instance=ExtResource("4_1bvp3")]
+[node name="CanvasLayer" parent="." unique_id=822341721 instance=ExtResource("4_1bvp3")]
 process_priority = 0
-grid = NodePath("../RepeatLayer/RepeatContent/Node2D")
 
 [node name="RepeatLayer" type="Parallax2D" parent="." unique_id=531420540]
 follow_viewport = false
@@ -43,7 +42,7 @@ ignore_camera_scroll = true
 
 [node name="RepeatContent" type="Node2D" parent="RepeatLayer" unique_id=2097005140]
 
-[node name="Node2D" type="Control" parent="RepeatLayer/RepeatContent" unique_id=1115575389 node_paths=PackedStringArray("configUI", "repeat_layer", "repeat_content", "camera")]
+[node name="Node2D" type="Control" parent="RepeatLayer/RepeatContent" unique_id=1115575389 node_paths=PackedStringArray("repeat_layer", "repeat_content", "camera")]
 z_as_relative = false
 layout_mode = 3
 anchors_preset = 0
@@ -53,7 +52,6 @@ mouse_filter = 1
 script = ExtResource("1_0xm2m")
 tile = ExtResource("2_0xm2m")
 tileScript = ExtResource("4_lquwl")
-configUI = NodePath("../../../CanvasLayer")
 repeat_layer = NodePath("../..")
 repeat_content = NodePath("..")
 camera = NodePath("camera")
@@ -77,3 +75,8 @@ mouse_zoom_step = 1.07
 one_shot = true
 
 [node name="CanvasLayer2" type="CanvasLayer" parent="." unique_id=529484103]
+
+[connection signal="pressed" from="CanvasLayer/Screenroot/SafeSpace/Anchorspace/New Game/VBoxContainer/Buttons/Button4" to="RepeatLayer/RepeatContent/Node2D" method="new_puzzle"]
+[connection signal="pressed" from="CanvasLayer/Screenroot/SafeSpace/Anchorspace/Settings/ScrollContainer/HBoxContainer/VBoxContainer/Buttons/Button4" to="RepeatLayer/RepeatContent/Node2D" method="new_puzzle"]
+[connection signal="pressed" from="CanvasLayer/Screenroot/SafeSpace/Anchorspace/Settings/ScrollContainer/HBoxContainer/VBoxContainer2/Buttons2/randomise" to="RepeatLayer/RepeatContent/Node2D" method="rand"]
+[connection signal="pressed" from="CanvasLayer/Screenroot/SafeSpace/Anchorspace/Settings/ScrollContainer/HBoxContainer/VBoxContainer2/Buttons2/solve" to="RepeatLayer/RepeatContent/Node2D" method="solve"]

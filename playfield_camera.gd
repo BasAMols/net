@@ -144,7 +144,7 @@ func _handle_primary_button(event: InputEventMouseButton) -> void:
 		_primary_owned = true
 		_primary_tile = tile
 		_primary_hold_triggered = false
-		hold_timer.start(grid.configUI.value_hold_delay / 1000.0)
+		hold_timer.start(SettingsStore.get_float(SettingsStore.HOLD_DELAY_MS) / 1000.0)
 	else:
 		if not _primary_owned:
 			return

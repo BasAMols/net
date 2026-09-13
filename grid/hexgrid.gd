@@ -3,7 +3,6 @@ extends Control
 
 @export var tile: PackedScene
 @export var tileScript: Script
-@export var configUI: ConfigUI
 @export var repeat_layer: Parallax2D
 @export var repeat_content: Node2D
 @export var camera: PlayfieldCamera
@@ -37,9 +36,6 @@ var tileCount: int
 var isDone: bool
 var hasBeenDone: bool = false
 
-func getS(s: String)->bool:
-	return configUI.getS(s)
-
 func setSpawn(newTile: Tile) -> void: 
 	for t in spawns.values():
 		t.set_spawn_state(false)
@@ -56,7 +52,7 @@ func _ready() -> void:
 
 func _process(_delta: float) -> void:
 	if repeat_available:
-		var should_show_repeats := getS("showGhost")
+		var should_show_repeats := SettingsStore.get_bool(SettingsStore.SHOW_GHOST)
 		if should_show_repeats != repeat_visible:
 			_set_repeat_visuals_enabled(should_show_repeats)
 
@@ -68,19 +64,19 @@ func _process(_delta: float) -> void:
 
 func _get_visual_settings_signature() -> int:
 	var signature := 0
-	if getS('showSpawn'):
+	if SettingsStore.get_bool(SettingsStore.SHOW_PATHS):
 		signature |= 1 << 0
-	if getS('showLoops'):
+	if SettingsStore.get_bool(SettingsStore.SHOW_LOOP_ERRORS):
 		signature |= 1 << 1
-	if getS('showIsolation'):
+	if SettingsStore.get_bool(SettingsStore.SHOW_ISOLATION_ERRORS):
 		signature |= 1 << 2
-	if getS('showCompletionRainbow'):
+	if SettingsStore.get_bool(SettingsStore.COMPLETION_EFFECT):
 		signature |= 1 << 3
-	if getS('showPathRainbow'):
+	if SettingsStore.get_bool(SettingsStore.RAINBOW_PATHS):
 		signature |= 1 << 4
-	if getS('review'):
+	if SettingsStore.get_bool(SettingsStore.REVIEW_LOCKED):
 		signature |= 1 << 5
-	if getS('reviewAll'):
+	if SettingsStore.get_bool(SettingsStore.REVIEW_UNLOCKED):
 		signature |= 1 << 6
 	return signature
 
@@ -183,7 +179,7 @@ func _configure_repetition() -> void:
 	repeat_content.transform = repeat_basis.affine_inverse()
 	repeat_available = true
 
-	_set_repeat_visuals_enabled(getS("showGhost"))
+	_set_repeat_visuals_enabled(SettingsStore.get_bool(SettingsStore.SHOW_GHOST))
 
 
 func _set_repeat_visuals_enabled(enabled: bool) -> void:
@@ -422,7 +418,7 @@ func new_puzzle() -> void:
 	hasBeenDone = false
 	isDone = false
 
-	parameters = configUI.generateConfig()
+	parameters = _create_generation_parameters()
 
 	result = generator.generate(parameters);
 	if not result.succeeded() or result.tiles.is_empty():
@@ -458,3 +454,27 @@ func new_puzzle() -> void:
 
 	rand(true)
 	newPuzzle.emit()
+
+
+func _create_generation_parameters() -> HexNetGenerator.GenerationParameters:
+	var new_parameters := HexNetGenerator.GenerationParameters.new()
+	var layout := SettingsStore.get_int(SettingsStore.LAYOUT) + 1
+
+	new_parameters.layout = layout
+	new_parameters.rectangle_mode = HexNetGenerator.RectangleMode.OFFSET_RECTANGLE
+	new_parameters.orientation = SettingsStore.get_int(SettingsStore.ORIENTATION)
+	new_parameters.offset_parity = HexNetGenerator.OffsetParity.ODD
+	new_parameters.require_unique = SettingsStore.get_bool(SettingsStore.UNIQUE_SOLUTION)
+
+	match layout:
+		HexNetGenerator.Layout.HEXAGON:
+			new_parameters.wraparound = SettingsStore.get_bool(SettingsStore.WRAP)
+			new_parameters.radius = SettingsStore.get_int(SettingsStore.RADIUS)
+		HexNetGenerator.Layout.RECTANGLE:
+			var wr := SettingsStore.get_bool(SettingsStore.WRAP)
+			new_parameters.wrap_width = wr
+			new_parameters.wrap_height = wr
+			new_parameters.width = SettingsStore.get_int(SettingsStore.RECTANGLE_WIDTH)
+			new_parameters.height = SettingsStore.get_int(SettingsStore.RECTANGLE_HEIGHT)
+
+	return new_parameters

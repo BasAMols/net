@@ -32,15 +32,6 @@ var _tooltip: String = ''
 		richElement.text = v
 		richElement.visible = tooltip.length() > 0
 
-var _state: int = 0
-@export var state: int: 
-	get:
-		return _state
-	set(v):
-		_state = v
-		if not is_node_ready(): return
-		actionSelect.selected = v
-
 var _values: Array[String] = []
 @export var values: Array[String]: 
 	get:
@@ -52,15 +43,7 @@ var _values: Array[String] = []
 		for i in v:
 			actionSelect.add_item(i)
 
-		actionSelect.selected = _state
-
-		
-
-@export var target: String
-@export var prop: String
-@export var minValue: float
-@export var maxValue: float
-@export var stepValue: float
+@export var setting_key: StringName
 
 @export_group('elements')
 @export var actionSelect: ActionSelect
@@ -84,6 +67,4 @@ func _ready() -> void:
 	for i in values:
 		actionSelect.add_item(i)
 
-	actionSelect.selected = _state
-	actionSelect.target = target
-	actionSelect.prop = prop
+	actionSelect.setting_key = setting_key

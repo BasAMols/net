@@ -7,7 +7,11 @@ var visual_follow_rate: float = 4
 func _ready() -> void:
 
 	grid.validated.connect(func(v):
-		targetColor = Color('black' if v and grid.getS('showCompletionRainbow') else '333340')
+		targetColor = Color(
+			'black'
+			if v and SettingsStore.get_bool(SettingsStore.COMPLETION_EFFECT)
+			else '333340'
+		)
 	)
 
 func _process(delta: float) -> void:

@@ -21,8 +21,6 @@ theme = ExtResource("1_qhmok")
 script = ExtResource("2_8fboo")
 label = "placeholder"
 icon = "work"
-maxValue = 100.0
-stepValue = 10.0
 actionNumber = NodePath("HBoxContainer/slider")
 labelElement = NodePath("HBoxContainer/holdDelay")
 iconElement = NodePath("HBoxContainer/Icon")
@@ -60,7 +58,6 @@ step = 10.0
 value = 100.0
 rounded = true
 script = ExtResource("4_kkw77")
-target = ""
 
 [node name="value" type="Label" parent="HBoxContainer" unique_id=39396930]
 custom_minimum_size = Vector2(0, 30)
