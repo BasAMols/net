@@ -1,0 +1,72 @@
+[gd_scene format=3 uid="uid://pncyklckcu7r"]
+
+[ext_resource type="Theme" uid="uid://bnuyruidnnl8c" path="res://ui/theme.tres" id="1_qdcfn"]
+[ext_resource type="Script" uid="uid://b5c057xyxqwy5" path="res://ui/select_row.gd" id="2_qdcfn"]
+[ext_resource type="FontFile" uid="uid://b53u5h1yregls" path="res://assets/Material_Symbols_Outlined/static/MaterialSymbolsOutlined_28pt-SemiBold.ttf" id="3_rrpvq"]
+[ext_resource type="Script" uid="uid://pem3klnqiv5d" path="res://ui/actionSelect.gd" id="4_qdcfn"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_uud5k"]
+font = ExtResource("3_rrpvq")
+font_size = 18
+
+[node name="selectRow" type="VBoxContainer" unique_id=1447188047 node_paths=PackedStringArray("actionSelect", "labelElement", "iconElement", "richElement")]
+custom_minimum_size = Vector2(216, 30)
+custom_maximum_size = Vector2(216, -1)
+offset_right = 216.0
+offset_bottom = 30.0
+size_flags_horizontal = 2
+size_flags_vertical = 4
+mouse_filter = 2
+theme = ExtResource("1_qdcfn")
+script = ExtResource("2_qdcfn")
+actionSelect = NodePath("HBoxContainer/OptionButton")
+labelElement = NodePath("HBoxContainer/holdDelay")
+iconElement = NodePath("HBoxContainer/Icon")
+richElement = NodePath("richText")
+
+[node name="HBoxContainer" type="HFlowContainer" parent="." unique_id=2126841227]
+layout_mode = 2
+
+[node name="Icon" type="Label" parent="HBoxContainer" unique_id=1680092961]
+modulate = Color(0.49411765, 0.50980395, 0.74509805, 1)
+custom_minimum_size = Vector2(19, 30)
+custom_maximum_size = Vector2(19, 30)
+layout_mode = 2
+size_flags_horizontal = 0
+text = "work"
+label_settings = SubResource("LabelSettings_uud5k")
+vertical_alignment = 1
+autowrap_trim_flags = 0
+justification_flags = 0
+max_lines_visible = 1
+
+[node name="holdDelay" type="Label" parent="HBoxContainer" unique_id=1039932337]
+layout_mode = 2
+size_flags_horizontal = 2
+theme = ExtResource("1_qdcfn")
+text = "placeholder"
+
+[node name="OptionButton" type="OptionButton" parent="HBoxContainer" unique_id=1913113208]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+allow_reselect = true
+script = ExtResource("4_qdcfn")
+
+[node name="richText" type="RichTextLabel" parent="." unique_id=1821195731]
+custom_minimum_size = Vector2(194, -1)
+custom_maximum_size = Vector2(194, -1)
+clip_contents = false
+layout_mode = 2
+offset_transform_enabled = true
+offset_transform_position = Vector2(23, -4)
+offset_transform_visual_only = false
+theme = ExtResource("1_qdcfn")
+theme_type_variation = &"uisubtext"
+bbcode_enabled = true
+fit_content = true
+scroll_active = false
+shortcut_keys_enabled = false
+justification_flags = 161
+meta_underlined = false
+hint_underlined = false

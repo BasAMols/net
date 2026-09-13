@@ -1,0 +1,91 @@
+[gd_scene format=3 uid="uid://bhrdwdjjsb3l4"]
+
+[ext_resource type="Theme" uid="uid://bnuyruidnnl8c" path="res://ui/theme.tres" id="1_qhmok"]
+[ext_resource type="Script" uid="uid://73uvry2f8krg" path="res://ui/slider_row.gd" id="2_8fboo"]
+[ext_resource type="FontFile" uid="uid://b53u5h1yregls" path="res://assets/Material_Symbols_Outlined/static/MaterialSymbolsOutlined_28pt-SemiBold.ttf" id="3_qvbq3"]
+[ext_resource type="Script" uid="uid://i2b08l45fgb8" path="res://ui/actionNumber.gd" id="4_kkw77"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_uud5k"]
+font = ExtResource("3_qvbq3")
+font_size = 18
+
+[node name="holdDelay" type="VBoxContainer" unique_id=1447188047 node_paths=PackedStringArray("actionNumber", "labelElement", "iconElement", "richElement", "valueElement")]
+custom_minimum_size = Vector2(216, 30)
+custom_maximum_size = Vector2(216, -1)
+offset_right = 216.0
+offset_bottom = 30.0
+size_flags_horizontal = 2
+size_flags_vertical = 4
+mouse_filter = 2
+theme = ExtResource("1_qhmok")
+script = ExtResource("2_8fboo")
+label = "placeholder"
+icon = "work"
+maxValue = 100.0
+stepValue = 10.0
+actionNumber = NodePath("HBoxContainer/slider")
+labelElement = NodePath("HBoxContainer/holdDelay")
+iconElement = NodePath("HBoxContainer/Icon")
+richElement = NodePath("richText")
+valueElement = NodePath("HBoxContainer/value")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=1230520396]
+layout_mode = 2
+
+[node name="Icon" type="Label" parent="HBoxContainer" unique_id=1680092961]
+modulate = Color(0.49411765, 0.50980395, 0.74509805, 1)
+custom_minimum_size = Vector2(19, 30)
+custom_maximum_size = Vector2(19, 30)
+layout_mode = 2
+size_flags_horizontal = 0
+text = "work"
+label_settings = SubResource("LabelSettings_uud5k")
+vertical_alignment = 1
+autowrap_trim_flags = 0
+justification_flags = 0
+max_lines_visible = 1
+
+[node name="holdDelay" type="Label" parent="HBoxContainer" unique_id=1039932337]
+layout_mode = 2
+size_flags_horizontal = 0
+theme = ExtResource("1_qhmok")
+text = "placeholder"
+
+[node name="slider" type="HSlider" parent="HBoxContainer" unique_id=2016312983]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme = ExtResource("1_qhmok")
+step = 10.0
+value = 100.0
+rounded = true
+script = ExtResource("4_kkw77")
+target = ""
+
+[node name="value" type="Label" parent="HBoxContainer" unique_id=39396930]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+theme = ExtResource("1_qhmok")
+text = "100.0"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="richText" type="RichTextLabel" parent="." unique_id=1821195731]
+custom_minimum_size = Vector2(194, -1)
+custom_maximum_size = Vector2(194, -1)
+clip_contents = false
+layout_mode = 2
+offset_transform_enabled = true
+offset_transform_position = Vector2(23, -4)
+offset_transform_visual_only = false
+theme = ExtResource("1_qhmok")
+theme_type_variation = &"uisubtext"
+bbcode_enabled = true
+fit_content = true
+scroll_active = false
+shortcut_keys_enabled = false
+justification_flags = 161
+meta_underlined = false
+hint_underlined = false

@@ -1,0 +1,79 @@
+[gd_scene format=3 uid="uid://7pxlpy0ownmu"]
+
+[ext_resource type="Script" uid="uid://d1t2jweehrshp" path="res://grid/hexgrid.gd" id="1_0xm2m"]
+[ext_resource type="Script" uid="uid://c7c7yepg7xmma" path="res://background.gd" id="1_7mycd"]
+[ext_resource type="Theme" uid="uid://bnuyruidnnl8c" path="res://ui/theme.tres" id="1_272bh"]
+[ext_resource type="PackedScene" uid="uid://ciy2n1vmjliu1" path="res://ui/tile.tscn" id="2_0xm2m"]
+[ext_resource type="PackedScene" uid="uid://bduovw4gwi472" path="res://ui/ui.tscn" id="4_1bvp3"]
+[ext_resource type="Script" uid="uid://bqa6gxfhmkrr1" path="res://ui/tile.gd" id="4_lquwl"]
+[ext_resource type="Script" uid="uid://ducy44oriw0o0" path="res://playfield_camera.gd" id="6_camera"]
+
+[node name="Control" type="Control" unique_id=1604089861]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme = ExtResource("1_272bh")
+
+[node name="BackgroundLayer" type="CanvasLayer" parent="." unique_id=703349602]
+layer = -1
+
+[node name="ColorRect" type="ColorRect" parent="BackgroundLayer" unique_id=1641580779 node_paths=PackedStringArray("grid")]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme = ExtResource("1_272bh")
+color = Color(0.20065421, 0.19849852, 0.25156248, 1)
+script = ExtResource("1_7mycd")
+grid = NodePath("../../RepeatLayer/RepeatContent/Node2D")
+
+[node name="CanvasLayer" parent="." unique_id=822341721 node_paths=PackedStringArray("grid") instance=ExtResource("4_1bvp3")]
+process_priority = 0
+grid = NodePath("../RepeatLayer/RepeatContent/Node2D")
+
+[node name="RepeatLayer" type="Parallax2D" parent="." unique_id=531420540]
+follow_viewport = false
+ignore_camera_scroll = true
+
+[node name="RepeatContent" type="Node2D" parent="RepeatLayer" unique_id=2097005140]
+
+[node name="Node2D" type="Control" parent="RepeatLayer/RepeatContent" unique_id=1115575389 node_paths=PackedStringArray("configUI", "repeat_layer", "repeat_content", "camera")]
+z_as_relative = false
+layout_mode = 3
+anchors_preset = 0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+mouse_filter = 1
+script = ExtResource("1_0xm2m")
+tile = ExtResource("2_0xm2m")
+tileScript = ExtResource("4_lquwl")
+configUI = NodePath("../../../CanvasLayer")
+repeat_layer = NodePath("../..")
+repeat_content = NodePath("..")
+camera = NodePath("camera")
+
+[node name="camera" type="Camera2D" parent="RepeatLayer/RepeatContent/Node2D" unique_id=606721307 node_paths=PackedStringArray("grid")]
+ignore_rotation = false
+zoom = Vector2(0.745, 0.745)
+limit_enabled = false
+limit_left = -7838
+limit_top = -6264
+limit_right = 715
+limit_bottom = -859
+editor_draw_screen = false
+script = ExtResource("6_camera")
+grid = NodePath("..")
+min_zoom_multiplier = 0.5
+max_zoom_multiplier = 20.0
+mouse_zoom_step = 1.07
+
+[node name="HoldTimer" type="Timer" parent="RepeatLayer/RepeatContent/Node2D/camera" unique_id=1024804817]
+one_shot = true
+
+[node name="CanvasLayer2" type="CanvasLayer" parent="." unique_id=529484103]

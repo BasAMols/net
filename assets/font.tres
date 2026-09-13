@@ -1,0 +1,10 @@
+[gd_resource type="FontVariation" format=3 uid="uid://7ecfl3oj0ash"]
+
+[ext_resource type="FontFile" uid="uid://p136jux32dar" path="res://assets/OpenSans-VariableFont_wdth,wght.ttf" id="1_fiqku"]
+
+[resource]
+base_font = ExtResource("1_fiqku")
+variation_opentype = {
+2003072104: 100,
+2003265652: 500
+}

@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://bnvuaqmkcyfd6"]
+
+[ext_resource type="FontFile" uid="uid://b53u5h1yregls" path="res://assets/Material_Symbols_Outlined/static/MaterialSymbolsOutlined_28pt-SemiBold.ttf" id="1_mc3g1"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_uud5k"]
+font = ExtResource("1_mc3g1")
+font_size = 18
+
+[node name="Icon" type="Label" unique_id=893840550]
+custom_minimum_size = Vector2(10, -1)
+custom_maximum_size = Vector2(10, -1)
+size_flags_horizontal = 0
+text = "hourglas"
+label_settings = SubResource("LabelSettings_uud5k")
+autowrap_trim_flags = 0
+justification_flags = 0
+max_lines_visible = 1

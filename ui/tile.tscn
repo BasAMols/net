@@ -1,0 +1,50 @@
+[gd_scene format=3 uid="uid://ciy2n1vmjliu1"]
+
+[ext_resource type="Script" uid="uid://bqa6gxfhmkrr1" path="res://ui/tile.gd" id="1_tmaxv"]
+[ext_resource type="Texture2D" uid="uid://ddbbmvp3oouw1" path="res://assets/hex/target_fill.png" id="2_vx4y2"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_n3f48"]
+load_path = "res://.godot/imported/fill.png-0b08bfc33a0320932414046a5799dc24.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_tfor0"]
+load_path = "res://.godot/imported/Artboard 1.png-55f8696609e149ac43f6037527cdde01.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_cpv6t"]
+load_path = "res://.godot/imported/2_line_1.png-ff00acd71fa24a109b972c19cb7d1479.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_0w8l7"]
+load_path = "res://.godot/imported/2_line_active_1.png-cf6cd6cf65453348e4d7fd12ec00f6c1.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_t20d7"]
+load_path = "res://.godot/imported/spawn_2_corner_1.png-5b01c4ad5fa0b86cb9a3376bf30cd036.ctex"
+
+[node name="tile" type="Node2D" unique_id=172498191]
+script = ExtResource("1_tmaxv")
+
+[node name="fill" type="Sprite2D" parent="." unique_id=527609947]
+modulate = Color(0.15, 0.15, 0.2, 0.6392157)
+clip_children = 2
+scale = Vector2(0.95430624, 0.95430624)
+texture = SubResource("CompressedTexture2D_n3f48")
+
+[node name="node_active" type="Sprite2D" parent="." unique_id=386019839]
+modulate = Color(1, 1, 1, 0.6039216)
+scale = Vector2(1.088, 1.088)
+texture = ExtResource("2_vx4y2")
+
+[node name="dot" type="Sprite2D" parent="." unique_id=297987878]
+scale = Vector2(0.9829695, 0.9829695)
+texture = SubResource("CompressedTexture2D_tfor0")
+
+[node name="rotationAnchor" type="Node2D" parent="." unique_id=1299983293]
+
+[node name="spec" type="Sprite2D" parent="rotationAnchor" unique_id=552165445]
+texture = SubResource("CompressedTexture2D_cpv6t")
+
+[node name="spec_active" type="Sprite2D" parent="rotationAnchor" unique_id=1990327602]
+modulate = Color(0.6117647, 0.6117647, 0.6117647, 1)
+texture = SubResource("CompressedTexture2D_0w8l7")
+
+[node name="dot_active" type="Sprite2D" parent="." unique_id=1207095921]
+modulate = Color(0.6117647, 0.6117647, 0.6117647, 1)
+texture = SubResource("CompressedTexture2D_t20d7")
