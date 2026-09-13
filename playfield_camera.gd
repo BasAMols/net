@@ -22,9 +22,11 @@ var _middle_pending := false
 var _middle_panning := false
 var _middle_press_position := Vector2.ZERO
 var _middle_last_position := Vector2.ZERO
-var _middle_press_tile: Tile
+var _middle_press_coord := Vector2i.ZERO
+var _middle_has_coord := false
 
-var _primary_tile: Tile
+var _primary_coord := Vector2i.ZERO
+var _primary_has_coord := false
 var _primary_owned := false
 var _primary_hold_triggered := false
 var _secondary_owned := false
@@ -120,55 +122,65 @@ func _handle_middle_button(event: InputEventMouseButton) -> void:
 		_middle_panning = false
 		_middle_press_position = event.position
 		_middle_last_position = event.position
-		_middle_press_tile = _tile_at_screen_position(event.position)
+		var coordinate: Variant = _coord_at_screen_position(event.position)
+		_middle_has_coord = coordinate is Vector2i
+		if _middle_has_coord:
+			_middle_press_coord = coordinate
 	else:
 		if not _middle_pending and not _middle_panning:
 			return
 
-		if _middle_pending and _middle_press_tile != null:
-			grid.setSpawn(_middle_press_tile)
+		if _middle_pending and _middle_has_coord:
+			grid.request_set_spawn(_middle_press_coord)
 
 		_middle_pending = false
 		_middle_panning = false
-		_middle_press_tile = null
+		_middle_has_coord = false
 
 	get_viewport().set_input_as_handled()
 
 
 func _handle_primary_button(event: InputEventMouseButton) -> void:
 	if event.pressed:
-		var tile := _tile_at_screen_position(event.position)
-		if tile == null:
+		var coordinate: Variant = _coord_at_screen_position(event.position)
+		if not coordinate is Vector2i:
 			return
 		_cancel_primary_press()
 		_primary_owned = true
-		_primary_tile = tile
+		_primary_has_coord = true
+		_primary_coord = coordinate
 		_primary_hold_triggered = false
 		hold_timer.start(SettingsStore.get_float(SettingsStore.HOLD_DELAY_MS) / 1000.0)
 	else:
 		if not _primary_owned:
 			return
-		var pressed_tile := _primary_tile
-		var release_tile := _tile_at_screen_position(event.position)
-		var should_click := (
-			pressed_tile != null
-			and release_tile == pressed_tile
+		var pressed_coord := _primary_coord
+		var release_coord: Variant = _coord_at_screen_position(event.position)
+		var should_click: bool = (
+			_primary_has_coord
+			and release_coord is Vector2i
+			and release_coord == pressed_coord
 			and not _primary_hold_triggered
 		)
 		_cancel_primary_press()
 		if should_click:
-			pressed_tile.primary_click()
+			var direction := -1 if event.shift_pressed else 1
+			var move_source := (
+				event.ctrl_pressed
+				or SettingsStore.get_bool(SettingsStore.AUTO_MOVE_SOURCE)
+			)
+			grid.request_rotate_tile(pressed_coord, direction, move_source)
 
 	get_viewport().set_input_as_handled()
 
 
 func _handle_secondary_button(event: InputEventMouseButton) -> void:
 	if event.pressed:
-		var tile := _tile_at_screen_position(event.position)
-		if tile == null:
+		var coordinate: Variant = _coord_at_screen_position(event.position)
+		if not coordinate is Vector2i:
 			return
 		_secondary_owned = true
-		tile.secondary_click()
+		grid.request_toggle_lock(coordinate)
 	elif _secondary_owned:
 		_secondary_owned = false
 	else:
@@ -178,8 +190,8 @@ func _handle_secondary_button(event: InputEventMouseButton) -> void:
 
 
 func _handle_mouse_motion(event: InputEventMouseMotion) -> void:
-	if _primary_owned and _primary_tile != null:
-		if _tile_at_screen_position(event.position) != _primary_tile:
+	if _primary_owned and _primary_has_coord:
+		if _coord_at_screen_position(event.position) != _primary_coord:
 			_cancel_primary_press()
 
 	if not _middle_pending and not _middle_panning:
@@ -326,10 +338,10 @@ func _screen_to_world(screen_position: Vector2) -> Vector2:
 	return get_viewport().get_canvas_transform().affine_inverse() * screen_position
 
 
-func _tile_at_screen_position(screen_position: Vector2) -> Tile:
+func _coord_at_screen_position(screen_position: Vector2) -> Variant:
 	if grid == null:
 		return null
-	return grid.tile_at_world_position(_screen_to_world(screen_position))
+	return grid.coordinate_at_world_position(_screen_to_world(screen_position))
 
 
 func _set_zoom_value(value: float) -> void:
@@ -343,16 +355,16 @@ func _wrap_camera_position() -> void:
 
 func _cancel_primary_press() -> void:
 	hold_timer.stop()
-	_primary_tile = null
+	_primary_has_coord = false
 	_primary_owned = false
 	_primary_hold_triggered = false
 
 
 func _on_hold_timeout() -> void:
-	if not _primary_owned or _primary_tile == null:
+	if not _primary_owned or not _primary_has_coord:
 		return
 	_primary_hold_triggered = true
-	_primary_tile.secondary_click()
+	grid.request_toggle_lock(_primary_coord)
 
 
 func _cancel_pointer_actions() -> void:
@@ -360,4 +372,4 @@ func _cancel_pointer_actions() -> void:
 	_secondary_owned = false
 	_middle_pending = false
 	_middle_panning = false
-	_middle_press_tile = null
+	_middle_has_coord = false

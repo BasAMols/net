@@ -32,6 +32,9 @@ const AUTO_MOVE_SOURCE := &"interaction/auto_move_source"
 const EASE_SPEED := &"interaction/ease_speed"
 const HOLD_DELAY_MS := &"interaction/hold_delay_ms"
 
+const WINDOW_SIZE := &"window/size"
+const WINDOW_MAXIMIZED := &"window/maximized"
+
 ## Settings may exist without a UI control. Multiple controls may reference the
 ## same key; all of them are synchronized by this store.
 const DEFINITIONS := {
@@ -126,6 +129,14 @@ const DEFINITIONS := {
 		"max": 2000.0,
 		"step": 1.0,
 	},
+	WINDOW_SIZE: {
+		"type": TYPE_VECTOR2I,
+		"default": Vector2i(500, 500),
+	},
+	WINDOW_MAXIMIZED: {
+		"type": TYPE_BOOL,
+		"default": false,
+	},
 }
 
 var _values: Dictionary = {}
@@ -134,6 +145,9 @@ var _dirty := false
 var _syncing_actions := false
 var _write_blocked := false
 var _save_timer: Timer
+var _tracking_window_state := false
+var _last_windowed_size := Vector2i(500, 500)
+var _last_non_minimized_mode := Window.MODE_WINDOWED
 
 
 func _ready() -> void:
@@ -145,6 +159,7 @@ func _ready() -> void:
 
 	_initialize_values()
 	_load_user_settings()
+	_setup_window_state()
 
 	get_tree().node_added.connect(_on_node_added)
 	for node in get_tree().root.find_children("*", "", true, false):
@@ -156,10 +171,12 @@ func _ready() -> void:
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_APPLICATION_PAUSED or what == NOTIFICATION_WM_CLOSE_REQUEST:
+		_capture_window_state()
 		save_now()
 
 
 func _exit_tree() -> void:
+	_capture_window_state()
 	save_now()
 
 
@@ -190,6 +207,12 @@ func get_float(setting_key: StringName) -> float:
 	if not _definition_has_type(setting_key, TYPE_FLOAT):
 		return 0.0
 	return _values[setting_key] as float
+
+
+func get_vector2i(setting_key: StringName) -> Vector2i:
+	if not _definition_has_type(setting_key, TYPE_VECTOR2I):
+		return Vector2i.ZERO
+	return _values[setting_key] as Vector2i
 
 
 func set_setting(setting_key: StringName, value: Variant) -> bool:
@@ -353,6 +376,57 @@ func _sanitize_value(setting_key: StringName, value: Variant) -> Variant:
 
 func _split_setting_key(setting_key: StringName) -> PackedStringArray:
 	return String(setting_key).split("/", false, 1)
+
+
+func _setup_window_state() -> void:
+	if (
+		not OS.has_feature("windows")
+		or Engine.is_embedded_in_editor()
+		or DisplayServer.get_name() == "headless"
+	):
+		return
+
+	var window := get_window()
+	_last_windowed_size = _clamp_window_size(get_vector2i(WINDOW_SIZE), window.current_screen)
+	window.mode = Window.MODE_WINDOWED
+	window.size = _last_windowed_size
+	if get_bool(WINDOW_MAXIMIZED):
+		window.mode = Window.MODE_MAXIMIZED
+		_last_non_minimized_mode = Window.MODE_MAXIMIZED
+	else:
+		_last_non_minimized_mode = Window.MODE_WINDOWED
+
+	_tracking_window_state = true
+	window.size_changed.connect(_capture_window_state)
+
+
+func _capture_window_state() -> void:
+	if not _tracking_window_state:
+		return
+	var window := get_window()
+	match window.mode:
+		Window.MODE_WINDOWED:
+			_last_windowed_size = _clamp_window_size(window.size, window.current_screen)
+			_last_non_minimized_mode = Window.MODE_WINDOWED
+		Window.MODE_MAXIMIZED:
+			_last_non_minimized_mode = Window.MODE_MAXIMIZED
+		Window.MODE_MINIMIZED:
+			pass
+		_:
+			return
+
+	set_setting(WINDOW_SIZE, _last_windowed_size)
+	set_setting(WINDOW_MAXIMIZED, _last_non_minimized_mode == Window.MODE_MAXIMIZED)
+
+
+func _clamp_window_size(size: Vector2i, screen: int) -> Vector2i:
+	var usable_size := DisplayServer.screen_get_usable_rect(screen).size
+	if usable_size == Vector2i.ZERO:
+		return Vector2i(maxi(size.x, 320), maxi(size.y, 320))
+	return Vector2i(
+		clampi(size.x, 320, usable_size.x),
+		clampi(size.y, 320, usable_size.y)
+	)
 
 
 func _on_node_added(node: Node) -> void:

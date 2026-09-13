@@ -1,6 +1,7 @@
 [gd_resource type="Theme" format=3 uid="uid://bnuyruidnnl8c"]
 
 [ext_resource type="FontVariation" uid="uid://7ecfl3oj0ash" path="res://assets/font.tres" id="1_rqugq"]
+[ext_resource type="FontVariation" uid="uid://da32wbmyoh15g" path="res://ui/iconFont.tres" id="2_6lx7k"]
 [ext_resource type="FontFile" uid="uid://dqoxgkwhw6sm7" path="res://assets/OpenSans-Italic-VariableFont_wdth,wght.ttf" id="2_jf26r"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0xefo"]
@@ -41,12 +42,17 @@ content_margin_bottom = 5.0
 bg_color = Color(0.09764359, 0.09764359, 0.11856216, 1)
 shadow_color = Color(0, 0, 0, 0)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nkfox"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rtqkv"]
 content_margin_left = 5.0
 content_margin_top = 5.0
 content_margin_right = 5.0
 content_margin_bottom = 5.0
-bg_color = Color(0.06795511, 0.06795511, 0.085268214, 0)
+bg_color = Color(0, 0, 0, 0.35686275)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+corner_detail = 2
 shadow_color = Color(0, 0, 0, 0)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_78ylj"]
@@ -102,6 +108,54 @@ corner_radius_bottom_right = 2
 corner_radius_bottom_left = 2
 corner_detail = 3
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6lx7k"]
+bg_color = Color(0.205, 0.208, 0.25, 0)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+corner_detail = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_iqtc0"]
+bg_color = Color(0.09803922, 0.09803922, 0.11764706, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+corner_detail = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7any1"]
+bg_color = Color(0.09803922, 0.09803922, 0.11764706, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+corner_detail = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3fgq6"]
+bg_color = Color(0.09803922, 0.09803922, 0.11764706, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+corner_detail = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kek77"]
+bg_color = Color(0, 0, 0, 0.35686275)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+corner_detail = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_y5ki2"]
+bg_color = Color(0.09803922, 0.09803922, 0.11764706, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+corner_detail = 3
+
 [resource]
 default_font = ExtResource("1_rqugq")
 default_font_size = 13
@@ -116,7 +170,7 @@ FoldableContainer/colors/collapsed_font_color = Color(1, 1, 1, 1)
 FoldableContainer/styles/focus = SubResource("StyleBoxFlat_amlv4")
 FoldableContainer/styles/panel = SubResource("StyleBoxFlat_i7eh4")
 FoldableContainer/styles/title_collapsed_hover_panel = SubResource("StyleBoxFlat_aggjg")
-FoldableContainer/styles/title_collapsed_panel = SubResource("StyleBoxFlat_nkfox")
+FoldableContainer/styles/title_collapsed_panel = SubResource("StyleBoxFlat_rtqkv")
 FoldableContainer/styles/title_hover_panel = SubResource("StyleBoxFlat_78ylj")
 FoldableContainer/styles/title_panel = SubResource("StyleBoxFlat_aggjg")
 HSeparator/constants/separation = 12
@@ -124,6 +178,15 @@ HSeparator/styles/separator = SubResource("StyleBoxLine_uud5k")
 HSlider/styles/grabber_area = SubResource("StyleBoxFlat_i66g5")
 HSlider/styles/grabber_area_highlight = SubResource("StyleBoxFlat_nft0o")
 HSlider/styles/slider = SubResource("StyleBoxFlat_objbh")
+iconButton/base_type = &"Button"
+iconButton/font_sizes/font_size = 16
+iconButton/fonts/font = ExtResource("2_6lx7k")
+iconButton/styles/disabled = SubResource("StyleBoxFlat_6lx7k")
+iconButton/styles/focus = SubResource("StyleBoxFlat_iqtc0")
+iconButton/styles/hover = SubResource("StyleBoxFlat_7any1")
+iconButton/styles/hover_pressed = SubResource("StyleBoxFlat_3fgq6")
+iconButton/styles/normal = SubResource("StyleBoxFlat_kek77")
+iconButton/styles/pressed = SubResource("StyleBoxFlat_y5ki2")
 uisubtext/base_type = &"RichTextLabel"
 uisubtext/colors/default_color = Color(0.6953125, 0.6953125, 0.6953125, 1)
 uisubtext/font_sizes/bold_font_size = 9

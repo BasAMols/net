@@ -1,6 +1,8 @@
 class_name Tile
 extends Node2D
 
+## Passive animated view of one puzzle cell. HexGrid owns all puzzle state.
+
 @onready var anchor: Node2D = $rotationAnchor
 @onready var asset_fill: Sprite2D = $fill
 @onready var asset_node_active: Sprite2D = $node_active
@@ -8,10 +10,6 @@ extends Node2D
 @onready var asset_spec: Sprite2D = $rotationAnchor/spec
 @onready var asset_spec_active: Sprite2D = $rotationAnchor/spec_active
 @onready var asset_dot_active: Sprite2D = $dot_active
-
-var grid: HexGrid
-
-signal rotated
 
 static var SOURCES := {
 	"target": ["res://assets/hex/2_line_1.png", "res://assets/hex/2_line_active_1.png", [0], 6, true],
@@ -29,106 +27,92 @@ static var SOURCES := {
 	"6": ["res://assets/hex/6.png", "res://assets/hex/6_active.png", [0, 1, 2, 3, 4, 5], 1, false],
 }
 
-var source_assets: Array[String]
+var asset_key := "target"
+var axial_coord := Vector2i.ZERO
+var rotation_target := 0
+var locked := false
+var spawned := false
+var active := false
+var isolated := false
+var looped := false
+var is_correct := false
+var puzzle_completed := false
+var dot := false
+var board_bounds_length := 1.0
 
-var topology_neighbors: Dictionary[int, Vector2i] = {}
-
-func setup(
-	given_index: int,
-	given_key: String,
-	given_coord: Vector2,
-	given_spawn: bool,
-	given_rotation: int,
-	given_tileSize,
-	given_result: HexNetGenerator.GenerationResult,
-	given_grid: HexGrid
-)->void:
-	var asset = SOURCES[given_key];
-	asset_key = given_key
-
-	dot = asset[4]
-
-	source_assets = [asset[0], asset[1]]
-
-	spawn = given_spawn
-	active = given_spawn
-
-	axialCoord = given_coord
-	rotationTarget = given_rotation
-	correct = given_rotation
-	tileSize = given_tileSize
-
-	position = (
-		HexNetGenerator.axial_to_unit(given_coord, given_result.orientation)
-		* given_tileSize
-	)
-
-	rotation_degrees = given_result.tile_rotation_offset_degrees
-	grid = given_grid
-
-	rotated.connect(grid.tileChanged)
-
-	configure_topology(given_index, given_result)
-
-
-
-func configure_topology(
-	tile_index: int,
-	result: HexNetGenerator.GenerationResult
-) -> void:
-	topology_neighbors.clear()
-
-	for direction in range(6):
-		var neighbor_index: int = result.neighbors[tile_index][direction]
-
-		# -1 represents a genuine non-wrapped boundary.
-		if neighbor_index < 0:
-			continue
-
-		var neighbor_data: Dictionary = result.tiles[neighbor_index]
-		var neighbor_coord: Vector2i = neighbor_data["axialCoord"]
-
-		topology_neighbors[direction] = neighbor_coord
-
-
-func get_exit_neighbors() -> Array[Vector2i]:
-	var output: Array[Vector2i] = []
-
-	for base_direction: int in SOURCES[asset_key][2]:
-		var direction := posmod(base_direction + rotationTarget, 6)
-
-		# Missing only at a genuine boundary.
-		if not topology_neighbors.has(direction):
-			continue
-
-		output.append(topology_neighbors[direction])
-
-	return output
-func has_exit_towards(v: Vector2i) -> bool:
-	return get_exit_neighbors().has(v)
-
-var tileSize: int
-var rng = RandomNumberGenerator.new()
-var asset_key: String = 'target'
-var axialCoord: Vector2i = Vector2(0, 0)
-var spawn: bool = false
-var dot: bool = false
-var active: bool = false
-var isolated: bool = false
-var loop: bool = false
-var correct: int
-var rotationTarget := 0
-var lock: bool = false
-
+var _source_assets: Array[String] = []
 var _active_color_target := Color(0.9, 0.9, 0.9)
 var _lock_color_target := Color(0.3, 0.3, 0.4, 0.0)
 var _visual_targets_dirty := true
 
-func _match() -> bool:
-	return correct == fposmod(rotationTarget, SOURCES[asset_key][3])
+
+func setup(
+	given_key: String,
+	given_coord: Vector2i,
+	tile_size: int,
+	orientation: int,
+	tile_rotation_offset_degrees: float,
+	bounds_length: float
+) -> void:
+	var asset: Array = SOURCES[given_key]
+	asset_key = given_key
+	axial_coord = given_coord
+	dot = asset[4]
+	_source_assets = [asset[0], asset[1]]
+	board_bounds_length = maxf(bounds_length, 0.001)
+	position = HexNetGenerator.axial_to_unit(given_coord, orientation) * tile_size
+	rotation_degrees = tile_rotation_offset_degrees
+
+
+func apply_visual_state(
+	new_rotation: int,
+	new_locked: bool,
+	new_spawned: bool,
+	new_active: bool,
+	new_isolated: bool,
+	new_looped: bool,
+	new_is_correct: bool,
+	new_puzzle_completed: bool,
+	immediately: bool = false
+) -> void:
+	var changed := (
+		rotation_target != new_rotation
+		or locked != new_locked
+		or spawned != new_spawned
+		or active != new_active
+		or isolated != new_isolated
+		or looped != new_looped
+		or is_correct != new_is_correct
+		or puzzle_completed != new_puzzle_completed
+	)
+	rotation_target = new_rotation
+	locked = new_locked
+	spawned = new_spawned
+	active = new_active
+	isolated = new_isolated
+	looped = new_looped
+	is_correct = new_is_correct
+	puzzle_completed = new_puzzle_completed
+
+	if changed or immediately:
+		mark_visual_dirty()
+	if immediately and is_node_ready():
+		_refresh_visual_targets()
+		_apply_visual_targets(0.0, true)
+		set_process(_has_continuous_color_animation())
+
+
+func _ready() -> void:
+	asset_spec.texture = load(_source_assets[0])
+	asset_spec_active.texture = load(_source_assets[1])
+	anchor.rotation = rotation_target / 6.0 * TAU
+	_refresh_visual_targets()
+	_apply_visual_targets(0.0, true)
+	set_process(_has_continuous_color_animation())
+
 
 func _has_continuous_color_animation() -> bool:
-	if grid.isDone and SettingsStore.get_bool(SettingsStore.COMPLETION_EFFECT):
+	if puzzle_completed and SettingsStore.get_bool(SettingsStore.COMPLETION_EFFECT):
 		return true
 	return (
 		active
@@ -139,8 +123,7 @@ func _has_continuous_color_animation() -> bool:
 
 func _get_rainbow_color() -> Color:
 	var duration_msec := 3000.0
-	var bounds_length := maxf(grid.result.bounds.size.length(), 0.001)
-	var phase_offset := axialCoord.length() / bounds_length * duration_msec * 1
+	var phase_offset := axial_coord.length() / board_bounds_length * duration_msec
 	var hue := (Time.get_ticks_msec() + phase_offset) / duration_msec
 	return Color.from_ok_hsl(hue, 1, 0.7)
 
@@ -149,51 +132,41 @@ func _get_active_color_target() -> Color:
 	if _has_continuous_color_animation():
 		return _get_rainbow_color()
 
-	var activeColorTarget: Color = Color(0.9, 0.9, 0.9)
-
+	var target := Color(0.9, 0.9, 0.9)
 	if (
-		lock and SettingsStore.get_bool(SettingsStore.REVIEW_LOCKED)
+		locked and SettingsStore.get_bool(SettingsStore.REVIEW_LOCKED)
 	) or (
-		not lock and SettingsStore.get_bool(SettingsStore.REVIEW_UNLOCKED)
+		not locked and SettingsStore.get_bool(SettingsStore.REVIEW_UNLOCKED)
 	):
-		if _match():
-			activeColorTarget = Color(0.5, 1, 0.5)
-		else:
-			activeColorTarget = Color(1, 0.5, 0.5)
-
+		target = Color(0.5, 1.0, 0.5) if is_correct else Color(1.0, 0.5, 0.5)
 	else:
-		if loop and SettingsStore.get_bool(SettingsStore.SHOW_LOOP_ERRORS):
-			activeColorTarget = activeColorTarget * Color(1, 0.6, 0.6)
-			pass
+		if looped and SettingsStore.get_bool(SettingsStore.SHOW_LOOP_ERRORS):
+			target *= Color(1.0, 0.6, 0.6)
 		if (
 			isolated
 			and SettingsStore.get_bool(SettingsStore.SHOW_ISOLATION_ERRORS)
-			and not grid.isDone
+			and not puzzle_completed
 		):
-			activeColorTarget = activeColorTarget * Color(0.6, 0.6, 1)
-			pass
+			target *= Color(0.6, 0.6, 1.0)
 
 	if not active or not SettingsStore.get_bool(SettingsStore.SHOW_PATHS):
-		activeColorTarget = activeColorTarget * Color(.6, .7, .8)
-
-	return activeColorTarget
+		target *= Color(0.6, 0.7, 0.8)
+	return target
 
 
 func _get_lock_color_target() -> Color:
-	
-	var lockColorTarget = Color(0.35, 0.35, 0.5, 0.8) if lock else Color(0.35, 0.35, 0.5, 0.0)
+	var target := Color(0.35, 0.35, 0.5, 0.8) if locked else Color(0.35, 0.35, 0.5, 0.0)
+	if puzzle_completed:
+		target.a = 0.0
+	return target
 
-	if grid.isDone:
-		lockColorTarget.a = 0
-
-	return lockColorTarget
 
 func _refresh_visual_targets() -> void:
 	_active_color_target = _get_active_color_target()
 	_lock_color_target = _get_lock_color_target()
 
-	var show_spawn := SettingsStore.get_bool(SettingsStore.SHOW_PATHS)
-	var show_spawn_node := spawn and show_spawn and not grid.isDone
+	var show_paths := SettingsStore.get_bool(SettingsStore.SHOW_PATHS)
+	var show_spawn_node := spawned and show_paths and not puzzle_completed
 	asset_node_active.visible = show_spawn_node
 	asset_dot.visible = dot or show_spawn_node
 	asset_dot_active.visible = asset_dot.visible
@@ -203,29 +176,24 @@ func _refresh_visual_targets() -> void:
 func _apply_visual_targets(delta: float, immediately: bool = false) -> bool:
 	var ease_speed := SettingsStore.get_float(SettingsStore.EASE_SPEED)
 	var weight := 1.0 if immediately else 1.0 - exp(-ease_speed * delta)
-	var rotation_target := rotationTarget / 6.0 * TAU
+	var rotation_radians := rotation_target / 6.0 * TAU
 
-	asset_dot_active.modulate = lerp(
-		asset_dot_active.modulate,
-		_active_color_target,
-		weight
-	)
+	asset_dot_active.modulate = lerp(asset_dot_active.modulate, _active_color_target, weight)
 	asset_fill.modulate = lerp(asset_fill.modulate, _lock_color_target, weight)
-	anchor.rotation = lerp_angle(anchor.rotation, rotation_target, weight)
+	anchor.rotation = lerp_angle(anchor.rotation, rotation_radians, weight)
 
 	if immediately or _active_color_target.is_equal_approx(asset_dot_active.modulate):
 		asset_dot_active.modulate = _active_color_target
 	if immediately or _lock_color_target.is_equal_approx(asset_fill.modulate):
 		asset_fill.modulate = _lock_color_target
-	if immediately or absf(angle_difference(anchor.rotation, rotation_target)) < 0.0001:
-		anchor.rotation = rotation_target
+	if immediately or absf(angle_difference(anchor.rotation, rotation_radians)) < 0.0001:
+		anchor.rotation = rotation_radians
 
 	asset_spec_active.modulate = asset_dot_active.modulate
-
 	return (
 		_active_color_target.is_equal_approx(asset_dot_active.modulate)
 		and _lock_color_target.is_equal_approx(asset_fill.modulate)
-		and absf(angle_difference(anchor.rotation, rotation_target)) < 0.0001
+		and absf(angle_difference(anchor.rotation, rotation_radians)) < 0.0001
 	)
 
 
@@ -243,60 +211,3 @@ func _process(delta: float) -> void:
 func mark_visual_dirty() -> void:
 	_visual_targets_dirty = true
 	set_process(true)
-
-
-func set_validation_state(
-	new_active: bool,
-	new_isolated: bool,
-	new_loop: bool
-) -> void:
-	if active == new_active and isolated == new_isolated and loop == new_loop:
-		return
-	active = new_active
-	isolated = new_isolated
-	loop = new_loop
-	mark_visual_dirty()
-
-
-func set_spawn_state(new_spawn: bool) -> void:
-	if spawn == new_spawn:
-		return
-	spawn = new_spawn
-	mark_visual_dirty()
-
-func secondary_click() -> void:
-	lock = !lock
-	mark_visual_dirty()
-
-func primary_click() -> void:
-	if lock: return
-	if Input.is_key_pressed(KEY_SHIFT):
-		tileRotate(rotationTarget - 1)
-	else:
-		tileRotate(rotationTarget + 1)
-	if Input.is_key_pressed(KEY_CTRL) or SettingsStore.get_bool(SettingsStore.AUTO_MOVE_SOURCE):
-		grid.setSpawn(self)
-
-func tileRotate(v: float, s: bool = true) -> void:
-	var new_rotation := posmod(roundi(v), 6)
-	if rotationTarget != new_rotation:
-		rotationTarget = new_rotation
-		mark_visual_dirty()
-	if s:
-		rotated.emit()
-
-func randomRotate(s: bool = true) -> void:
-	tileRotate(rng.randf() * 6, s)
-
-func _ready() -> void:
-	asset_spec.texture = load(source_assets[0])
-	asset_spec_active.texture = load(source_assets[1])
-
-	anchor.rotation = rotationTarget
-
-
-
-func force() -> void:
-	_refresh_visual_targets()
-	_apply_visual_targets(0.0, true)
-	set_process(_has_continuous_color_animation())
