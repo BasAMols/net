@@ -10,8 +10,8 @@ font = ExtResource("3_qvbq3")
 font_size = 18
 
 [node name="holdDelay" type="VBoxContainer" unique_id=1447188047 node_paths=PackedStringArray("actionNumber", "labelElement", "iconElement", "richElement", "valueElement")]
-custom_minimum_size = Vector2(216, 30)
-custom_maximum_size = Vector2(216, -1)
+custom_minimum_size = Vector2(290, 30)
+custom_maximum_size = Vector2(290, -1)
 offset_right = 216.0
 offset_bottom = 30.0
 size_flags_horizontal = 2
@@ -65,13 +65,14 @@ layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 0
 theme = ExtResource("1_qhmok")
+theme_type_variation = &"uisubtext"
 text = "100.0"
 horizontal_alignment = 2
 vertical_alignment = 1
 
 [node name="richText" type="RichTextLabel" parent="." unique_id=1821195731]
-custom_minimum_size = Vector2(194, -1)
-custom_maximum_size = Vector2(194, -1)
+custom_minimum_size = Vector2(267, -1)
+custom_maximum_size = Vector2(267, -1)
 clip_contents = false
 layout_mode = 2
 offset_transform_enabled = true
@@ -80,6 +81,7 @@ offset_transform_visual_only = false
 theme = ExtResource("1_qhmok")
 theme_type_variation = &"uisubtext"
 bbcode_enabled = true
+text = "testtest"
 fit_content = true
 scroll_active = false
 shortcut_keys_enabled = false

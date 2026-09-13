@@ -10,8 +10,8 @@ font = ExtResource("2_6765q")
 font_size = 18
 
 [node name="toggleRow" type="VBoxContainer" unique_id=1852073229 node_paths=PackedStringArray("actionToggle", "labelElement", "iconElement", "richElement")]
-custom_minimum_size = Vector2(216, 30)
-custom_maximum_size = Vector2(216, -1)
+custom_minimum_size = Vector2(290, 30)
+custom_maximum_size = Vector2(290, -1)
 offset_right = 216.0
 offset_bottom = 34.0
 size_flags_horizontal = 3
@@ -51,8 +51,8 @@ script = ExtResource("3_3k7rx")
 
 [node name="richText" type="RichTextLabel" parent="." unique_id=1827448273]
 visible = false
-custom_minimum_size = Vector2(216, -1)
-custom_maximum_size = Vector2(194, -1)
+custom_minimum_size = Vector2(267, -1)
+custom_maximum_size = Vector2(267, -1)
 clip_contents = false
 layout_mode = 2
 offset_transform_enabled = true

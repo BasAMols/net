@@ -4,4 +4,4 @@
 
 [resource]
 base_font = ExtResource("1_vykab")
-variation_embolden = 1.0
+variation_embolden = 0.75
