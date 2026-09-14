@@ -1,0 +1,9 @@
+[gd_resource type="LabelSettings" format=3 uid="uid://cshbrffdmdiwh"]
+
+[ext_resource type="FontVariation" uid="uid://da32wbmyoh15g" path="res://ui/iconFont.tres" id="1_pb2n1"]
+
+[resource]
+paragraph_spacing = 3.0
+font = ExtResource("1_pb2n1")
+font_size = 22
+shadow_size = 0

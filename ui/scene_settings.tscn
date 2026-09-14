@@ -1,0 +1,172 @@
+[gd_scene format=3 uid="uid://dybuhjno36pkj"]
+
+[ext_resource type="Script" uid="uid://c6linkwbo3oip" path="res://ui/scene_settings.gd" id="1_kwkwy"]
+[ext_resource type="StyleBox" uid="uid://4p0m0b4asjkn" path="res://assets/styleboxes/bluePanel.tres" id="2_wnrww"]
+[ext_resource type="Theme" uid="uid://bnuyruidnnl8c" path="res://ui/theme.tres" id="3_mo5wv"]
+[ext_resource type="PackedScene" uid="uid://cc34rudgrm255" path="res://ui/scene_toggle.tscn" id="4_q3m26"]
+[ext_resource type="PackedScene" uid="uid://bhrdwdjjsb3l4" path="res://ui/scene_slider.tscn" id="5_dotjc"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ee4bf"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ee4bf"]
+bg_color = Color(0.17343748, 0.17343748, 0.17343748, 1)
+border_width_bottom = 2
+border_color = Color(0.32798582, 0.33156258, 0.3953125, 1)
+
+[node name="Control" type="Control" unique_id=1821211494]
+z_index = 20
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_kwkwy")
+
+[node name="Panel" type="Panel" parent="." unique_id=852917751]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = ExtResource("2_wnrww")
+
+[node name="MarginContainer" type="MarginContainer" parent="Panel" unique_id=1742734780]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("3_mo5wv")
+theme_type_variation = &"margin10"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/MarginContainer" unique_id=1133712221]
+layout_mode = 2
+
+[node name="_8" type="HSeparator" parent="Panel/MarginContainer/VBoxContainer" unique_id=208712336]
+custom_minimum_size = Vector2(0, 8.605)
+layout_mode = 2
+theme = ExtResource("3_mo5wv")
+theme_override_constants/separation = 0
+theme_override_styles/separator = SubResource("StyleBoxEmpty_ee4bf")
+
+[node name="Label" type="Label" parent="Panel/MarginContainer/VBoxContainer" unique_id=837927526]
+layout_mode = 2
+theme_override_font_sizes/font_size = 25
+text = "Settings"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="_9" type="HSeparator" parent="Panel/MarginContainer/VBoxContainer" unique_id=346875414]
+custom_minimum_size = Vector2(0, 8.605)
+layout_mode = 2
+theme = ExtResource("3_mo5wv")
+theme_override_constants/separation = 13
+theme_override_styles/separator = SubResource("StyleBoxFlat_ee4bf")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Panel/MarginContainer/VBoxContainer" unique_id=1305794324]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 4
+vertical_scroll_mode = 0
+
+[node name="GridContainer" type="VFlowContainer" parent="Panel/MarginContainer/VBoxContainer/ScrollContainer" unique_id=1768667744]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/h_separation = 10
+theme_override_constants/v_separation = 10
+
+[node name="Show loop" parent="Panel/MarginContainer/VBoxContainer/ScrollContainer/GridContainer" unique_id=1852073229 instance=ExtResource("4_q3m26")]
+layout_mode = 2
+label = "Show loop"
+icon = "all_inclusive"
+tooltip = "No section is allowed to loop on itself. When this is true that section is highlighted red."
+setting_key = &"visual/show_loop_errors"
+
+[node name="Show isolation" parent="Panel/MarginContainer/VBoxContainer/ScrollContainer/GridContainer" unique_id=148634643 instance=ExtResource("4_q3m26")]
+layout_mode = 2
+label = "Show isolation"
+icon = "network_node"
+tooltip = "All section must be connected to each other. When this is true, sections that have been completed but do not connect to the rest of the network are hightlighted blue. "
+setting_key = &"visual/show_isolation_errors"
+
+[node name="Review locked" parent="Panel/MarginContainer/VBoxContainer/ScrollContainer/GridContainer" unique_id=1099874186 instance=ExtResource("4_q3m26")]
+layout_mode = 2
+label = "Review locked"
+icon = "frame_inspect"
+tooltip = "Show which locked pieces are correct or incorrect. "
+setting_key = &"visual/review_locked"
+
+[node name="Review unlocked" parent="Panel/MarginContainer/VBoxContainer/ScrollContainer/GridContainer" unique_id=13702839 instance=ExtResource("4_q3m26")]
+visible = false
+layout_mode = 2
+label = "Review unlocked"
+tooltip = "Show which locked pieces are correct or incorrect. "
+setting_key = &"visual/review_unlocked"
+
+[node name="Show wrapping grid" parent="Panel/MarginContainer/VBoxContainer/ScrollContainer/GridContainer" unique_id=379612598 instance=ExtResource("4_q3m26")]
+layout_mode = 2
+label = "Show wrapping grid"
+icon = "border_style"
+tooltip = "For wrap mode only. Show an infinite grid. "
+setting_key = &"visual/show_ghost"
+
+[node name="Show paths" parent="Panel/MarginContainer/VBoxContainer/ScrollContainer/GridContainer" unique_id=2137529392 instance=ExtResource("4_q3m26")]
+custom_minimum_size = Vector2(216, 32)
+layout_mode = 2
+label = "Show paths"
+icon = "electric_bolt"
+tooltip = "Light up everything connected to a central spawn point. Use middle mouse button to move. "
+setting_key = &"visual/show_paths"
+
+[node name="Rainbow paths" parent="Panel/MarginContainer/VBoxContainer/ScrollContainer/GridContainer" unique_id=1786364712 instance=ExtResource("4_q3m26")]
+layout_mode = 2
+label = "Rainbow paths"
+icon = "looks"
+tooltip = "Show a rainbow effect on active paths instead of white."
+setting_key = &"visual/rainbow_paths"
+
+[node name="Completion effect" parent="Panel/MarginContainer/VBoxContainer/ScrollContainer/GridContainer" unique_id=998544393 instance=ExtResource("4_q3m26")]
+layout_mode = 2
+label = "Completion effect"
+icon = "flare"
+tooltip = "Show rainbow effect when puzzle is completed."
+setting_key = &"visual/completion_effect"
+
+[node name="Ease speed" parent="Panel/MarginContainer/VBoxContainer/ScrollContainer/GridContainer" unique_id=1447188047 instance=ExtResource("5_dotjc")]
+layout_mode = 2
+label = "Ease speed"
+icon = "motion_play"
+tooltip = "Amount of easing applied to color changes and rotation. Bigger is faster."
+setting_key = &"interaction/ease_speed"
+
+[node name="Hold Delay" parent="Panel/MarginContainer/VBoxContainer/ScrollContainer/GridContainer" unique_id=1341857941 instance=ExtResource("5_dotjc")]
+layout_mode = 2
+label = "Hold Delay"
+icon = "timer"
+tooltip = "After this amount of miliseconds of holding left-click, it counts as a right click. "
+setting_key = &"interaction/hold_delay_ms"
+
+[node name="Auto move source" parent="Panel/MarginContainer/VBoxContainer/ScrollContainer/GridContainer" unique_id=1600981696 instance=ExtResource("4_q3m26")]
+layout_mode = 2
+label = "Auto move source"
+icon = "rotate_auto"
+tooltip = "Automatically move spawn when rotating a tile."
+setting_key = &"interaction/auto_move_source"
+
+[node name="Disable animation" parent="Panel/MarginContainer/VBoxContainer/ScrollContainer/GridContainer" unique_id=895312137 instance=ExtResource("4_q3m26")]
+layout_mode = 2
+size_flags_vertical = 0
+label = "Disable animation"
+icon = "disabled_visible"
+tooltip = "Removes all visual animation effects and easing"
+setting_key = &"visual/disable_animation"
+
+[node name="Button" type="Button" parent="Panel/MarginContainer/VBoxContainer" unique_id=220740515]
+layout_mode = 2
+text = "return"
+
+[connection signal="pressed" from="Panel/MarginContainer/VBoxContainer/Button" to="." method="close"]

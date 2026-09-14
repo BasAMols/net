@@ -2,7 +2,9 @@
 
 [ext_resource type="FontVariation" uid="uid://7ecfl3oj0ash" path="res://assets/font.tres" id="1_rqugq"]
 [ext_resource type="FontVariation" uid="uid://da32wbmyoh15g" path="res://ui/iconFont.tres" id="2_6lx7k"]
+[ext_resource type="StyleBox" uid="uid://4p0m0b4asjkn" path="res://assets/styleboxes/bluePanel.tres" id="2_7any1"]
 [ext_resource type="FontFile" uid="uid://dqoxgkwhw6sm7" path="res://assets/OpenSans-Italic-VariableFont_wdth,wght.ttf" id="2_jf26r"]
+[ext_resource type="StyleBox" uid="uid://npr2xi5vt48f" path="res://assets/styleboxes/emptyStylebox.tres" id="3_iqtc0"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0xefo"]
 content_margin_left = 5.0
@@ -24,15 +26,6 @@ content_margin_right = 5.0
 content_margin_bottom = 5.0
 bg_color = Color(0.15633053, 0.15808679, 0.18169665, 1)
 shadow_color = Color(0, 0, 0, 0)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i7eh4"]
-content_margin_left = 10.0
-content_margin_top = 10.0
-content_margin_right = 10.0
-content_margin_bottom = 10.0
-bg_color = Color(0.13287945, 0.13287945, 0.15539062, 1)
-shadow_color = Color(0, 0, 0, 0)
-anti_aliasing = false
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_aggjg"]
 content_margin_left = 5.0
@@ -141,7 +134,7 @@ corner_radius_bottom_left = 5
 corner_detail = 3
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kek77"]
-bg_color = Color(0, 0, 0, 0.35686275)
+bg_color = Color(0.13333334, 0.13333334, 0.15686275, 1)
 corner_radius_top_left = 5
 corner_radius_top_right = 5
 corner_radius_bottom_right = 5
@@ -168,7 +161,7 @@ CheckButton/constants/align_to_largest_stylebox = 1
 CheckButton/constants/check_v_offset = 1
 FoldableContainer/colors/collapsed_font_color = Color(1, 1, 1, 1)
 FoldableContainer/styles/focus = SubResource("StyleBoxFlat_amlv4")
-FoldableContainer/styles/panel = SubResource("StyleBoxFlat_i7eh4")
+FoldableContainer/styles/panel = ExtResource("2_7any1")
 FoldableContainer/styles/title_collapsed_hover_panel = SubResource("StyleBoxFlat_aggjg")
 FoldableContainer/styles/title_collapsed_panel = SubResource("StyleBoxFlat_rtqkv")
 FoldableContainer/styles/title_hover_panel = SubResource("StyleBoxFlat_78ylj")
@@ -179,7 +172,7 @@ HSlider/styles/grabber_area = SubResource("StyleBoxFlat_i66g5")
 HSlider/styles/grabber_area_highlight = SubResource("StyleBoxFlat_nft0o")
 HSlider/styles/slider = SubResource("StyleBoxFlat_objbh")
 iconButton/base_type = &"Button"
-iconButton/font_sizes/font_size = 33
+iconButton/font_sizes/font_size = 28
 iconButton/fonts/font = ExtResource("2_6lx7k")
 iconButton/styles/disabled = SubResource("StyleBoxFlat_6lx7k")
 iconButton/styles/focus = SubResource("StyleBoxFlat_iqtc0")
@@ -187,6 +180,13 @@ iconButton/styles/hover = SubResource("StyleBoxFlat_7any1")
 iconButton/styles/hover_pressed = SubResource("StyleBoxFlat_3fgq6")
 iconButton/styles/normal = SubResource("StyleBoxFlat_kek77")
 iconButton/styles/pressed = SubResource("StyleBoxFlat_y5ki2")
+margin10/base_type = &"MarginContainer"
+margin10/constants/margin_bottom = 10
+margin10/constants/margin_left = 10
+margin10/constants/margin_right = 10
+margin10/constants/margin_top = 10
+paddinglessFold/base_type = &"FoldableContainer"
+paddinglessFold/styles/panel = ExtResource("3_iqtc0")
 uisubtext/base_type = &"RichTextLabel"
 uisubtext/colors/default_color = Color(0.5890625, 0.5890625, 0.5890625, 1)
 uisubtext/font_sizes/bold_font_size = 14

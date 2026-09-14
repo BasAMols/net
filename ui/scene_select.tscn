@@ -1,0 +1,111 @@
+[gd_scene format=3 uid="uid://demd5ewea264v"]
+
+[ext_resource type="Theme" uid="uid://bnuyruidnnl8c" path="res://ui/theme.tres" id="1_5rvbv"]
+[ext_resource type="Script" uid="uid://b5c057xyxqwy5" path="res://ui/ui_select.gd" id="2_5rvbv"]
+[ext_resource type="Script" uid="uid://pem3klnqiv5d" path="res://ui/actionSelect.gd" id="3_pcu57"]
+[ext_resource type="LabelSettings" uid="uid://cshbrffdmdiwh" path="res://assets/styleboxes/iconLabel.tres" id="4_5rvbv"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eknig"]
+content_margin_left = 18.0
+content_margin_top = 5.0
+content_margin_right = 5.0
+content_margin_bottom = 12.0
+bg_color = Color(0.2175, 0.2175, 0.25, 1)
+border_width_left = 6
+border_color = Color(0.33352295, 0.33352295, 0.6046875, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 4
+shadow_color = Color(0, 0, 0, 0.28627452)
+shadow_size = 5
+anti_aliasing = false
+
+[node name="Scene Select" type="PanelContainer" unique_id=404102933 node_paths=PackedStringArray("actionSelect", "labelElement", "iconElement", "richElement")]
+custom_minimum_size = Vector2(250, 60)
+custom_maximum_size = Vector2(250, -1)
+offset_right = 240.0
+offset_bottom = 40.0
+size_flags_horizontal = 3
+mouse_filter = 2
+theme = ExtResource("1_5rvbv")
+theme_override_styles/panel = SubResource("StyleBoxFlat_eknig")
+script = ExtResource("2_5rvbv")
+actionSelect = NodePath("HBoxContainer3/HBoxContainer/OptionButton")
+labelElement = NodePath("HBoxContainer3/HBoxContainer/name")
+iconElement = NodePath("Control/icon")
+richElement = NodePath("HBoxContainer3/HBoxContainer/richText")
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="." unique_id=237585504]
+custom_minimum_size = Vector2(-1, -1)
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 0
+
+[node name="HBoxContainer" type="VBoxContainer" parent="HBoxContainer3" unique_id=415555297]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+mouse_filter = 2
+
+[node name="name" type="Label" parent="HBoxContainer3/HBoxContainer" unique_id=438554357]
+layout_mode = 2
+size_flags_horizontal = 2
+theme = ExtResource("1_5rvbv")
+text = "Select"
+
+[node name="OptionButton" type="OptionButton" parent="HBoxContainer3/HBoxContainer" unique_id=1732649165]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+flat = true
+allow_reselect = true
+script = ExtResource("3_pcu57")
+
+[node name="richText" type="RichTextLabel" parent="HBoxContainer3/HBoxContainer" unique_id=1827448273]
+custom_minimum_size = Vector2(200, 0)
+custom_maximum_size = Vector2(200, -1)
+propagate_maximum_size = true
+clip_contents = false
+layout_mode = 2
+offset_transform_position = Vector2(18, -4)
+offset_transform_visual_only = false
+mouse_filter = 2
+theme = ExtResource("1_5rvbv")
+theme_type_variation = &"uisubtext"
+bbcode_enabled = true
+fit_content = true
+scroll_active = false
+shortcut_keys_enabled = false
+justification_flags = 161
+meta_underlined = false
+hint_underlined = false
+
+[node name="Control" type="Control" parent="." unique_id=1482561305]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+offset_transform_enabled = true
+offset_transform_position = Vector2(-4.05, 9.685)
+mouse_filter = 2
+
+[node name="icon" type="Label" parent="Control" unique_id=1023361770]
+modulate = Color(0.49411765, 0.50980395, 0.74509805, 1)
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -22.0
+offset_top = -28.0
+grow_horizontal = 0
+grow_vertical = 0
+size_flags_horizontal = 8
+size_flags_vertical = 8
+text = "settings"
+label_settings = ExtResource("4_5rvbv")
+autowrap_trim_flags = 0
+justification_flags = 0
+max_lines_visible = 1

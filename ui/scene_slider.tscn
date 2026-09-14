@@ -1,0 +1,124 @@
+[gd_scene format=3 uid="uid://bf8e6qg4jfc6"]
+
+[ext_resource type="Theme" uid="uid://bnuyruidnnl8c" path="res://ui/theme.tres" id="1_pqwji"]
+[ext_resource type="Script" uid="uid://73uvry2f8krg" path="res://ui/ui_slider.gd" id="2_pqwji"]
+[ext_resource type="Script" uid="uid://i2b08l45fgb8" path="res://ui/actionNumber.gd" id="3_m5jyj"]
+[ext_resource type="LabelSettings" uid="uid://cshbrffdmdiwh" path="res://assets/styleboxes/iconLabel.tres" id="4_sl1vf"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eknig"]
+content_margin_left = 18.0
+content_margin_top = 5.0
+content_margin_right = 5.0
+content_margin_bottom = 12.0
+bg_color = Color(0.2175, 0.2175, 0.25, 1)
+border_width_left = 6
+border_color = Color(0.33352295, 0.33352295, 0.6046875, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 4
+shadow_color = Color(0, 0, 0, 0.28627452)
+shadow_size = 5
+anti_aliasing = false
+
+[node name="Scene Slider" type="PanelContainer" unique_id=404102933 node_paths=PackedStringArray("actionNumber", "valueElement", "labelElement", "iconElement", "richElement")]
+custom_minimum_size = Vector2(250, 60)
+custom_maximum_size = Vector2(250, -1)
+offset_right = 240.0
+offset_bottom = 40.0
+size_flags_horizontal = 3
+mouse_filter = 2
+theme = ExtResource("1_pqwji")
+theme_override_styles/panel = SubResource("StyleBoxFlat_eknig")
+script = ExtResource("2_pqwji")
+actionNumber = NodePath("HBoxContainer3/HBoxContainer/slider")
+valueElement = NodePath("HBoxContainer3/HBoxContainer/value")
+labelElement = NodePath("HBoxContainer3/HBoxContainer/name")
+iconElement = NodePath("Control/icon")
+richElement = NodePath("HBoxContainer3/HBoxContainer/richText")
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="." unique_id=237585504]
+custom_minimum_size = Vector2(-1, -1)
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 0
+
+[node name="HBoxContainer" type="HFlowContainer" parent="HBoxContainer3" unique_id=557155694]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+mouse_filter = 2
+
+[node name="name" type="Label" parent="HBoxContainer3/HBoxContainer" unique_id=438554357]
+layout_mode = 2
+theme = ExtResource("1_pqwji")
+text = "slider"
+
+[node name="slider" type="HSlider" parent="HBoxContainer3/HBoxContainer" unique_id=626797454]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme = ExtResource("1_pqwji")
+step = 10.0
+value = 100.0
+rounded = true
+script = ExtResource("3_m5jyj")
+
+[node name="value" type="Label" parent="HBoxContainer3/HBoxContainer" unique_id=1190207547]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+theme = ExtResource("1_pqwji")
+theme_type_variation = &"uisubtext"
+text = "100"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="richText" type="RichTextLabel" parent="HBoxContainer3/HBoxContainer" unique_id=1827448273]
+custom_minimum_size = Vector2(200, 0)
+custom_maximum_size = Vector2(200, -1)
+propagate_maximum_size = true
+clip_contents = false
+layout_mode = 2
+offset_transform_position = Vector2(18, -4)
+offset_transform_visual_only = false
+mouse_filter = 2
+theme = ExtResource("1_pqwji")
+theme_type_variation = &"uisubtext"
+bbcode_enabled = true
+fit_content = true
+scroll_active = false
+shortcut_keys_enabled = false
+justification_flags = 161
+meta_underlined = false
+hint_underlined = false
+
+[node name="Control" type="Control" parent="." unique_id=1482561305]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+offset_transform_enabled = true
+offset_transform_position = Vector2(-4.05, 9.685)
+mouse_filter = 2
+
+[node name="icon" type="Label" parent="Control" unique_id=1023361770]
+modulate = Color(0.49411765, 0.50980395, 0.74509805, 1)
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -22.0
+offset_top = -28.0
+grow_horizontal = 0
+grow_vertical = 0
+size_flags_horizontal = 8
+size_flags_vertical = 8
+text = "settings"
+label_settings = ExtResource("4_sl1vf")
+autowrap_trim_flags = 0
+justification_flags = 0
+max_lines_visible = 1

@@ -1,7 +1,13 @@
 [gd_resource type="FontVariation" format=3 uid="uid://da32wbmyoh15g"]
 
-[ext_resource type="FontFile" uid="uid://dqk8g0x44rmdv" path="res://assets/Material_Symbols_Outlined/static/MaterialSymbolsOutlined_36pt-Thin.ttf" id="1_vykab"]
+[ext_resource type="FontFile" uid="uid://dn0patnrkwpf" path="res://assets/Material_Symbols_Outlined/MaterialSymbolsOutlined-VariableFont_FILL,GRAD,opsz,wght.ttf" id="1_vykab"]
 
 [resource]
 base_font = ExtResource("1_vykab")
-variation_embolden = 0.75
+variation_opentype = {
+1179208780: 0,
+1196572996: 0,
+1869640570: 20,
+2003072104: 100,
+2003265652: 500
+}
