@@ -6,6 +6,7 @@ extends Control
 @export var repeat_layer: Parallax2D
 @export var repeat_content: Node2D
 @export var camera: PlayfieldCamera
+@export var menus: Array[Control]
 
 signal completed
 signal newPuzzle
@@ -71,6 +72,9 @@ func _ready() -> void:
 	if load_error != OK:
 		new_puzzle()
 	_visual_settings_signature = _get_visual_settings_signature()
+
+	for m in menus: 
+		m.visible = false
 
 
 func _notification(what: int) -> void:

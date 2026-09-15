@@ -5,3 +5,6 @@ func open()-> void:
 
 func close()-> void:
 	visible = false
+
+func toggle()-> void:
+	visible = !visible

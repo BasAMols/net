@@ -60,7 +60,7 @@ ignore_camera_scroll = true
 
 [node name="RepeatContent" type="Node2D" parent="RepeatLayer" unique_id=2097005140]
 
-[node name="Node2D" type="Control" parent="RepeatLayer/RepeatContent" unique_id=1115575389 node_paths=PackedStringArray("repeat_layer", "repeat_content", "camera")]
+[node name="Node2D" type="Control" parent="RepeatLayer/RepeatContent" unique_id=1115575389 node_paths=PackedStringArray("repeat_layer", "repeat_content", "camera", "menus")]
 z_as_relative = false
 layout_mode = 3
 anchors_preset = 0
@@ -73,6 +73,7 @@ tileScript = ExtResource("4_lquwl")
 repeat_layer = NodePath("../..")
 repeat_content = NodePath("..")
 camera = NodePath("camera")
+menus = [NodePath("../../../UI/Screenroot/Menu"), NodePath("../../../UI/Screenroot/New Game")]
 
 [node name="camera" type="Camera2D" parent="RepeatLayer/RepeatContent/Node2D" unique_id=606721307 node_paths=PackedStringArray("grid")]
 ignore_rotation = false
@@ -354,26 +355,27 @@ theme_override_constants/separation = 10
 alignment = 1
 
 [node name="SettingsButton" type="Button" parent="UI/Screenroot/SafeSpace/CenterContainer" unique_id=1753834085]
-custom_minimum_size = Vector2(50, 50)
-custom_maximum_size = Vector2(50, 50)
+custom_minimum_size = Vector2(70, 50)
+custom_maximum_size = Vector2(70, 50)
 layout_mode = 2
 theme = ExtResource("1_272bh")
 theme_type_variation = &"iconButton"
 theme_override_fonts/font = ExtResource("10_ycdy4")
-text = "Settings"
+text = "Settingsarrow_menu_open"
+autowrap_trim_flags = 0
 script = ExtResource("6_efxa6")
 
 [node name="New Game" type="Button" parent="UI/Screenroot/SafeSpace/CenterContainer" unique_id=1836448995]
-custom_minimum_size = Vector2(50, 50)
-custom_maximum_size = Vector2(50, 50)
+custom_minimum_size = Vector2(70, 50)
+custom_maximum_size = Vector2(70, 50)
 layout_mode = 2
 theme = ExtResource("1_272bh")
 theme_type_variation = &"iconButton"
 theme_override_fonts/font = ExtResource("10_ycdy4")
-text = "extension"
+text = "extensionarrow_menu_open"
 script = ExtResource("6_efxa6")
 
-[node name="New Game2" type="Button" parent="UI/Screenroot/SafeSpace/CenterContainer" unique_id=1246512954]
+[node name="Solve" type="Button" parent="UI/Screenroot/SafeSpace/CenterContainer" unique_id=1246512954]
 custom_minimum_size = Vector2(50, 50)
 custom_maximum_size = Vector2(50, 50)
 layout_mode = 2
@@ -421,22 +423,23 @@ action_mode = 0
 text = "redo"
 
 [node name="Menu" type="Control" parent="UI/Screenroot" unique_id=1821211494]
-visible = false
 z_index = 20
-custom_maximum_size = Vector2(800, -1)
-layout_mode = 1
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_vertical = 2
-script = ExtResource("11_dg77c")
-
-[node name="Panel" type="Panel" parent="UI/Screenroot/Menu" unique_id=852917751]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("11_dg77c")
+
+[node name="Panel" type="Panel" parent="UI/Screenroot/Menu" unique_id=852917751]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -707.0
+offset_right = 538.0
+grow_vertical = 0
 theme_override_styles/panel = ExtResource("12_ycdy4")
 
 [node name="MarginContainer" type="MarginContainer" parent="UI/Screenroot/Menu/Panel" unique_id=1742734780]
@@ -581,20 +584,23 @@ text = "return"
 [node name="New Game" type="Control" parent="UI/Screenroot" unique_id=1549113391]
 visible = false
 z_index = 20
-custom_maximum_size = Vector2(273.025, -1)
-layout_mode = 1
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_vertical = 2
-script = ExtResource("11_dg77c")
-
-[node name="Panel" type="Panel" parent="UI/Screenroot/New Game" unique_id=1212007014]
+custom_minimum_size = Vector2(-1, -1)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("11_dg77c")
+
+[node name="Panel" type="Panel" parent="UI/Screenroot/New Game" unique_id=1212007014]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -481.0
+offset_right = 540.0
+grow_vertical = 0
 theme_override_styles/panel = ExtResource("12_ycdy4")
 
 [node name="MarginContainer" type="MarginContainer" parent="UI/Screenroot/New Game/Panel" unique_id=1665771989]
@@ -626,7 +632,7 @@ theme_override_fonts/font = ExtResource("10_ycdy4")
 text = "close"
 flat = true
 
-[node name="_9" type="HSeparator" parent="UI/Screenroot/New Game/Panel/MarginContainer/VBoxContainer" unique_id=535418266]
+[node name="_9" type="HSeparator" parent="UI/Screenroot/New Game/Panel/MarginContainer/VBoxContainer" unique_id=664545887]
 custom_minimum_size = Vector2(0, 8.605)
 layout_mode = 2
 theme = ExtResource("1_272bh")
@@ -668,12 +674,11 @@ icon = "hexagon"
 tooltip = "Amount of rings the puzzle will have. Values above 8 might take a long time to load. "
 setting_key = &"new_game/radius"
 
-[node name="Orientation" parent="UI/Screenroot/New Game/Panel/MarginContainer/VBoxContainer/ScrollContainer/GridContainer" unique_id=621808652 instance=ExtResource("14_vivmo")]
+[node name="Orientation" parent="UI/Screenroot/New Game/Panel/MarginContainer/VBoxContainer/ScrollContainer/GridContainer" unique_id=1268930774 instance=ExtResource("14_vivmo")]
 layout_mode = 2
 values = Array[String](["Flat top", "Pointy top"])
 label = "Orientation"
 icon = "screen_rotation_alt"
-setting_key = &"new_game/orientation"
 
 [node name="Buttons" type="HFlowContainer" parent="UI/Screenroot/New Game/Panel/MarginContainer/VBoxContainer" unique_id=922128444]
 layout_mode = 2
@@ -695,9 +700,9 @@ text = "New Game"
 [connection signal="pressed" from="UI/Screenroot/SafeSpace/VBoxContainer/Anchorspace/Settings/HBoxContainer/Buttons/Button4" to="RepeatLayer/RepeatContent/Node2D" method="new_puzzle"]
 [connection signal="pressed" from="UI/Screenroot/SafeSpace/VBoxContainer/Anchorspace/Settings/HBoxContainer/Buttons/randomise" to="RepeatLayer/RepeatContent/Node2D" method="rand"]
 [connection signal="pressed" from="UI/Screenroot/SafeSpace/VBoxContainer/Anchorspace/Settings/HBoxContainer/Buttons/solve" to="RepeatLayer/RepeatContent/Node2D" method="solve"]
-[connection signal="pressed" from="UI/Screenroot/SafeSpace/CenterContainer/SettingsButton" to="UI/Screenroot/Menu" method="open"]
-[connection signal="pressed" from="UI/Screenroot/SafeSpace/CenterContainer/New Game" to="UI/Screenroot/New Game" method="open"]
-[connection signal="pressed" from="UI/Screenroot/SafeSpace/CenterContainer/New Game2" to="RepeatLayer/RepeatContent/Node2D" method="solve"]
+[connection signal="pressed" from="UI/Screenroot/SafeSpace/CenterContainer/SettingsButton" to="UI/Screenroot/Menu" method="toggle"]
+[connection signal="pressed" from="UI/Screenroot/SafeSpace/CenterContainer/New Game" to="UI/Screenroot/New Game" method="toggle"]
+[connection signal="pressed" from="UI/Screenroot/SafeSpace/CenterContainer/Solve" to="RepeatLayer/RepeatContent/Node2D" method="solve"]
 [connection signal="pressed" from="UI/Screenroot/SafeSpace/CenterContainer/Randomise" to="RepeatLayer/RepeatContent/Node2D" method="rand"]
 [connection signal="pressed" from="UI/Screenroot/SafeSpace/CenterContainer/Undo" to="RepeatLayer/RepeatContent/Node2D" method="undo_puzzle_action"]
 [connection signal="pressed" from="UI/Screenroot/SafeSpace/CenterContainer/Redo" to="RepeatLayer/RepeatContent/Node2D" method="redo_puzzle_action"]
